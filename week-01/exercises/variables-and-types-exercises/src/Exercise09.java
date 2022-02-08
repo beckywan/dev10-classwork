@@ -6,6 +6,8 @@ public class Exercise09 {
         double b = -4817.496614294316;
         double c = 46338.06248816222;
 
+        double d = (a + b + c) / 3;
+        System.out.println(d);
         // 1. Calculate the average of a, b, and c and store the value in a new variable.
         // 2. Print the result.
         // Expected value: 45041.03185 (give or take)

@@ -1,4 +1,13 @@
 public class Exercise25 {
+    public static void main(String[] args) {
+            String adjective = "cold";
+            String verb = "dance";
+            String noun = "geese";
+            String adverb = " passionately";
+
+            String madlib = "It was so " + adjective + ", the " + noun + " started to " +verb + adverb + ".";
+            System.out.println(madlib);
+    }
 
     // Mad Libs: https://en.wikipedia.org/wiki/Mad_Libs
     // 1. Add a main method.
