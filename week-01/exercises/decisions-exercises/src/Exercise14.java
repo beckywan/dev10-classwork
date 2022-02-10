@@ -22,6 +22,9 @@ public class Exercise14 {
             case 1:
                 System.out.println("I refuse to say \"a case of the Mondays\".");
                 break;
+            case 2:
+                System.out.println("it is tuesday..");
+                break;
             default:
                 System.out.println("I don't recognize that day.");
                 break;
