@@ -19,6 +19,18 @@ public class Exercise06 {
         System.out.print("# of Shoppers: ");
         int shopperCount = Integer.parseInt(console.nextLine());
 
+        int totalCount = shopperCount + snorkelerCount;
+        System.out.println("Total # of Snorkelers and Shoppers: " + totalCount);
+
         // 1. Apply if/else here.
+        if (totalCount %2 == 0) {
+            System.out.println("Everyone gets their preferred activities.");
+        }
+            else {
+                System.out.println("No snorkeling.");
+                System.out.println("Total # of Shoppers: " + totalCount);
+                snorkelerCount = 0;
+            }
+
     }
 }

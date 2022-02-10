@@ -21,5 +21,7 @@ public class Exercise10 {
         // If a lbs/zone combo does not exist, print a warning message for the user.
 
         Scanner console = new Scanner(System.in);
+        System.out.println();
+
     }
 }
