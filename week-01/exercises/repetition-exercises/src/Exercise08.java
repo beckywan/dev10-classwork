@@ -12,10 +12,10 @@ public class Exercise08 {
         System.out.println("Enter a name (Required): ");
         String name = console.nextLine();
 
-        while (name.isBlank()) {
+        do {
             System.out.println("Enter a name (Required): ");
             name = console.nextLine();
-        }
+        } while (name.isBlank());
 
         System.out.println("Name: " + name);
     }

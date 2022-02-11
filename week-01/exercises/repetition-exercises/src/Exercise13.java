@@ -12,7 +12,16 @@ public class Exercise13 {
         // 1. Write a loop that "doubles" each character in a user-entered word.
         // You'll need a new string variable to store the result.
         // 2. Print the result.
+        int i = 0;
+        String result = "";
 
+        while (i < phrase.length()) {
+            char letter = phrase.charAt(i);
+            result = result + letter + letter;
+            i++;
+        }
+
+        System.out.println(result);
         // Examples
         // ===============
         // "dog" -> "ddoogg"

@@ -18,7 +18,7 @@ public class Exercise01 {
         // 10
 
         int index = 0;
-        while (index < 5) {
+        while (index < 11) {
             System.out.println(index);
             index++;
         }

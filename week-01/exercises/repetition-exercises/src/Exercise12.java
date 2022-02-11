@@ -10,5 +10,23 @@ public class Exercise12 {
 
         // 1. Write a loop to determine if the letter `x` occurs in a user-entered phrase.
         // 2. Print a message for both finding and not finding the `x`.
+        int i = 0;
+
+        while (i < phrase.length()) {
+            char result = phrase.charAt(i);
+            i = i + 1;
+            if (result == 'x') {
+                System.out.println("yay x");
+                break;
+            }
+            if (i + 1 == phrase.length()) {
+                    {
+                        System.out.println("no x");
+                        break;
+                    }
+
+            }
+
+        }
     }
 }

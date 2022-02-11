@@ -11,5 +11,10 @@ public class Exercise03 {
         // 19
         // 18
         // 17
+        int index = 23;
+        while (index > 16) {
+            System.out.println(index);
+            index--;
+        }
     }
 }
