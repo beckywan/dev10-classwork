@@ -7,6 +7,7 @@ public class Exercise03 {
         Musician one = new Musician("Frank Ocean", 10);
         System.out.println(one.getName());
 
+        one.setName("Lofi");
         // 2. Use the appropriate setter to change Musician one's name to your favorite musician.
         // (If Frank Ocean is your favorite musician, choose your second favorite.)
 
