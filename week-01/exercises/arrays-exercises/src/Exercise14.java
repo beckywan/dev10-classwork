@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Random;
 
 public class Exercise14 {
@@ -42,6 +43,9 @@ public class Exercise14 {
         // The email addresses above are valid, but have inconsistent capitalization.
         // 1. Fix the capitalization. Normalize to all lowercase.
 
+        for (int i = 0; i < emailAddresses.length; i++) {
+            emailAddresses[i] = emailAddresses[i].toLowerCase();
+        }
         // The following call should print all lowercase email addresses.
         printArray(emailAddresses);
     }

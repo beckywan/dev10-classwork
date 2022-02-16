@@ -8,7 +8,17 @@ public class Exercise10 {
 
         // The bugs array elements are either the value "beetle" or "mosquito".
         // 1. Count the number of beetles and mosquitoes.
+        int beetleCount = 0;
+        int mosCount = 0;
+        for (int i = 0; i < bugs.length; i++) {
+            if (bugs[i] == "beetle") {
+                beetleCount++;
+            } else {
+                mosCount++;
+            }
+        }
         // 2. Print the result.
+        System.out.println("beetle count: " + beetleCount + "\nmosquito count: " + mosCount);
         // Results will vary because of randomness.
     }
 

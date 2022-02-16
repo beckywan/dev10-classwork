@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class Exercise16 {
@@ -6,12 +7,38 @@ public class Exercise16 {
         // MERGE
         int[] one = makeRandomAscendingArray();
         int[] two = makeRandomAscendingArray();
+        System.out.println("array1: " + Arrays.toString(one));
+        System.out.println("array2: " + Arrays.toString(two));
+
 
         // makeRandomAscendingArray creates a random array with a capacity between 50 and 150.
         // Its elements are guaranteed to be sorted ascending.
         // 1. Create a new int[] with capacity for all elements from `one` and `two`.
+        int sum = one.length + two.length;
+        int[] both = new int[sum];
+
         // 2. "Merge" elements from `one` and `two` into the new array so that its values are sorted.
 
+
+        for (int i = 0, oneIndex = 0, twoIndex = 0; i < both.length; i++) {
+            if (oneIndex >= one.length) {
+                both[i] = two[twoIndex];
+                twoIndex++;
+            } else if (twoIndex >= two.length) {
+                both[i] = one[oneIndex];
+                oneIndex++;
+            } else if (one[oneIndex] <= two[twoIndex]) {
+                both[i] = one[oneIndex];
+                oneIndex++;
+            } else if (two[twoIndex] < one[oneIndex]) {
+                both[i] = two[twoIndex];
+                twoIndex++;
+            }
+
+
+        }
+
+        System.out.println("array both: " + Arrays.toString(both));
          /* Pseudocode:
          Create an integer index for `one`, `two`, and the result array, all starting at 0.
          Loop resultIndex from 0 to result.length - 1:
@@ -22,6 +49,7 @@ public class Exercise16 {
            if twoIndex >= two.length, there are no `two` elements remaining so use elements from one
           */
     }
+
 
     public static int[] makeRandomAscendingArray() {
         Random random = new Random();

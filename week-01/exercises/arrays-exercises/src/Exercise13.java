@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class Exercise13 {
@@ -8,9 +9,31 @@ public class Exercise13 {
         // The statesOrTowns array contains either state abbreviations or town names. You can distinguish state
         // abbreviations by their length. They're always two characters.
         // 1. Count the towns.
+        int townCount = 0;
+
+        for (int i = 0; i < statesOrTowns.length; i++) {
+            if (statesOrTowns[i].length() != 2) {
+                townCount++;
+            }
+        }
+
         // 2. Create a String[] to hold the towns.
+        String[] towns = new String[townCount];
+
         // 3. Loop through statesOrTowns a second time and put all towns in the new array.
+        int townArrayIndex = 0;
+
+        for (int i = 0; i < statesOrTowns.length; i++) {
+            if (statesOrTowns[i].length() != 2) {
+                towns[townArrayIndex] = statesOrTowns[i];
+                townArrayIndex++;
+            }
+        }
+
         // 4. Print the town array.
+        System.out.println("number of towns: " + townCount);
+        System.out.println("towns array: " + Arrays.toString(towns));
+
     }
 
     public static String[] makeRandomStateAndTownArray() {
