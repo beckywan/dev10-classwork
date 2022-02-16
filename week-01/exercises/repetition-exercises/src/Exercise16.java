@@ -6,6 +6,19 @@ public class Exercise16 {
         // One loop should represent rows and the other should represent columns.
         // The border character should be different from the internal box character.
         // 2. Change the row and column limit to change the shape of the box.
+        int row = 5;
+        int col = 7;
+        String border = "*";
+        System.out.println(border.repeat(col));
+        for(int rowCount = 2; rowCount < row; rowCount++){
+            System.out.print(border);
+            for (int colCount = 2; colCount < col ; colCount++){
+                System.out.print("#");
+            }
+            System.out.println(border);
+        }
+        System.out.println(border.repeat(col));
+
 
         // Expected Output (5X5)
         // *****

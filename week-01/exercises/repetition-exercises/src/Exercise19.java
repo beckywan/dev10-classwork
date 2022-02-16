@@ -11,11 +11,28 @@ public class Exercise19 {
         System.out.print("Second string: ");
         String second = console.nextLine();
 
+        String newPhrase = "";
+
+
         // 1. Write a loop to interleave two strings to form a new string.
+        int i1 = 0;
+        int i2 = 0;
+        while (i1 != first.length() || i2 != second.length()) {
+            if (i1 < first.length()) {
+                newPhrase += first.charAt(i1++);
+            }
+            if (i2 < second.length()) {
+                newPhrase += second.charAt(i2++);
+            }
+        }
+
+
+
         // To interleave, during each loop take one character from the first string and add it to the result
         // and take one character from the second string and add it to the result.
         // If there are no more characters available, don't add characters.
         // 2. Print the result.
+        System.out.println(newPhrase);
 
         // Examples
         // "abc", "123" -> "a1b2c3"

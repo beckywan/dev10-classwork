@@ -17,8 +17,19 @@ public class Exercise18 {
 
         // 1. Write a loop to create a new string from a phrase by "cutting out" any characters from the start index
         // to the end index.
-        // 2. Print the result.
+        int i = 0;
+        String newPhrase = "";
+        while (i < phrase.length()){
+            if (!(i >= start && i <= end)) {
+                newPhrase += phrase.charAt(i);
+            }
+            i++;
+        }
 
+        String cut = phrase.substring(start, end);
+
+        // 2. Print the result.
+        System.out.println(newPhrase);
         // Examples
         // phrase, start, end -> result
         // ========================
