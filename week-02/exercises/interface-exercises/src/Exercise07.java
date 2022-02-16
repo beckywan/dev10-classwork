@@ -37,13 +37,47 @@ public class Exercise07 {
         System.out.println("3. Vault");
         System.out.println("4. Bank Account");
 
+
         String input;
         do {
             System.out.print("Select [1-4]:");
             input = console.nextLine();
         } while (!(input.length() == 1 && input.charAt(0) >= '1' && input.charAt(0) <= '4'));
 
+
         // 1. Add a switch statement to handle options 1 - 4.
+
+        switch(input){
+            case "1":
+                System.out.println("What is the starting balance?");
+                int walletBalance = Integer.parseInt(console.nextLine());
+                System.out.println("Enter Wallet Description: ");
+                String walletDescription = console.nextLine();
+                MoneyStorage wallet = new Wallet(walletBalance, walletDescription);
+                return wallet;
+            case "2":
+                System.out.println("What is the starting balance?");
+                int mortgageBalance = Integer.parseInt(console.nextLine());
+                System.out.println("Enter Mortgage Account Number: ");
+                String mortgageAccountNumber = console.nextLine();
+                MoneyStorage mortgage = new Mortgage(mortgageBalance, mortgageAccountNumber);
+                return mortgage;
+            case "3":
+                System.out.println("What is the starting balance?");
+                int vaultBalance = Integer.parseInt(console.nextLine());
+                System.out.println("Enter Vault Description: ");
+                String vaultDescription = console.nextLine();
+                MoneyStorage vault = new Vault(vaultBalance, vaultDescription);
+                return vault;
+            case "4":
+                System.out.println("What is the starting balance?");
+                int bankBalance = Integer.parseInt(console.nextLine());
+                System.out.println("Enter Bank Account Number: ");
+                String bankAccountNumber = console.nextLine();
+                MoneyStorage bankAcc = new Wallet(bankBalance, bankAccountNumber);
+                return bankAcc;
+        }
+
         // 2. For each option, create a method that returns a MoneyStorage of the appropriate type:
         // 1 == Wallet, 2 == Mortgage, 3 == Vault, 4 == Bank Account
         // Prompt the user for data. Data should be specific to the type:
