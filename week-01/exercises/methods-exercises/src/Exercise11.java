@@ -8,7 +8,7 @@ public class Exercise11 {
 
         name = readString("What's your name?: ");
         // 2. Uncomment the line below and confirm readInt works.
-        // pillowCount = readInt("How many pillows do you sleep with?: ");
+        pillowCount = readInt("How many pillows do you sleep with?: ");
 
         System.out.printf("%s sleeps with %s pillows.%n", name, pillowCount);
     }
@@ -19,6 +19,10 @@ public class Exercise11 {
     // Output: int
     // Description: prompts a user to enter a whole number and returns their input as an int.
     // The parameter is the message displayed to the user.
+    public static int readInt(String input) {
+        return Integer.parseInt(readString(input));
+
+    }
     //
     // Requirements:
     // readInt must use the readString method. Don't create a Scanner inside readInt.
