@@ -18,6 +18,20 @@ public class Exercise06 {
      * @return a new String[] with each element capitalized.
      */
     public String[] capitalizeAll(String[] values) {
-        return null;
+        String[] result = new String[values.length];
+        if (values.length == 0 ) {
+            return result;
+        }
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] ==  null) {
+                result[i] = null;
+            } else if (values[i] ==  "") {
+                result[i] = "";
+            } else {
+                result[i] = values[i].substring(0,1).toUpperCase() + values[i].substring(1);
+            }
+        }
+        return result;
     }
 }
