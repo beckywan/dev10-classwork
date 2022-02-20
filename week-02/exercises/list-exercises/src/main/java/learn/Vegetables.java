@@ -1,0 +1,19 @@
+package learn;
+
+public class Vegetables {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Vegetables(String name) {
+        this.name = name;
+    }
+
+    private String name;
+
+
+}

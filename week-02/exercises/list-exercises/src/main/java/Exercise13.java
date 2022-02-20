@@ -38,17 +38,21 @@ public class Exercise13 {
                 case "1":
                     // 1. Create a method that gathers user input via `console` to instantiate a BoardGame
                     // and then adds it to the `games` list.
+                    addGame();
+
                     // 2. Replace the the line of code below with a call to the method.
-                    printHeader("Add a board game.");
                     break;
                 case "2":
                     // 3. Create a method to display all board games in the `games` list.
                     // 4. Replace the the line of code below with a call to the method.
-                    printHeader("Display all board games.");
+                    viewGames();
+
                     break;
                 case "3":
                     // 5. Stretch Goal: Create a method that allows the user to remove a board game from the
                     // `games` list with an index.
+                    removeGame();
+
                     // 6. Replace the the line of code below with a call to the method.
                     printHeader("Remove a board game.");
                     break;
@@ -60,5 +64,30 @@ public class Exercise13 {
                     break;
             }
         } while (!input.equals("4"));
+    }
+
+    private void removeGame() {
+        System.out.println("# of the game to remove:");
+        int number = Integer.parseInt(console.nextLine());
+        int index = number - 1;
+            games.remove(number - 1);
+    }
+
+    private void viewGames() {
+        for (BoardGame game: games) {
+            System.out.println(game);
+        }
+    }
+
+    private void addGame() {
+        System.out.println("Name of the game:");
+        String name = console.nextLine();
+        System.out.println("Min players:");
+        int minPlayers = Integer.parseInt(console.nextLine());
+        System.out.println("Max Players:");
+        int maxPlayers = Integer.parseInt(console.nextLine());
+        System.out.println("Category:");
+        String category = console.nextLine();
+        games.add(new BoardGame(name, minPlayers, maxPlayers, category));
     }
 }

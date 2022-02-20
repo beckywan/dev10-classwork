@@ -8,7 +8,12 @@ public class Exercise08 {
     public static void main(String[] args) {
 
         ArrayList<BoardGame> games = GameRepository.getAll();
+        games.remove(4);
+        games.remove(9);
 
+        for (BoardGame game: games) {
+            System.out.println(game);
+        }
         // 1. Remove the the 5th and 10th game from `games`.
         // 2. Print `games`.
     }

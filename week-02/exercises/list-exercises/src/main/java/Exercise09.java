@@ -5,9 +5,21 @@ import java.util.ArrayList;
 
 public class Exercise09 {
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public static void main(String[] args) {
 
         ArrayList<BoardGame> games = GameRepository.getAll();
+
+        BoardGame eighth = games.get(7);
+        games.remove(eighth);
+
+        for (BoardGame game: games) {
+            System.out.println(game);
+        }
 
         // 1. Grab the 8th game in `games`.
         // 2. Remove it passing its reference to the `remove` method.
