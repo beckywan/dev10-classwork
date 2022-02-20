@@ -17,12 +17,38 @@ class SubmarineTest {
     }
 
     @Test
+    void shouldNotGoPastMaxDepth() {
+        submarine = new Submarine(5.0);
+        submarine.dive();
+        submarine.dive();
+        submarine.dive();
+        assertEquals(5.0, submarine.getDepthInMeters(), 0.001);
+    }
+
+    @Test
+    void shouldNotGoPastSurface() {
+        submarine = new Submarine(5.0);
+        submarine.surface();
+        submarine.surface();
+        submarine.surface();
+        assertEquals(0.0, submarine.getDepthInMeters(), 0.001);
+    }
+
+    @Test
     void shouldHaveCorrectPressureAfter3Dives() {
         submarine.dive();
         submarine.dive();
         submarine.dive();
         // 1.0 at sea level plus 1.0 * 0.9
         assertEquals(1.9, submarine.getPressureInAtmospheres(), 0.001);
+    }
+
+    @Test
+    void shouldHaveCorrectPressureAfter2Dives() {
+        submarine.dive();
+        submarine.dive();
+        // 1.0 at sea level plus 1.0 * 0.6
+        assertEquals(1.6, submarine.getPressureInAtmospheres(), 0.001);
     }
 
     // 1. Create one or more tests to confirm `dive` is working properly.

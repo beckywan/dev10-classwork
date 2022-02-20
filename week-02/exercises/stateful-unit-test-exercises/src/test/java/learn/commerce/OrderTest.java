@@ -32,10 +32,23 @@ class OrderTest {
         assertTrue(result);
         assertEquals(3, order.getLineItems().length);
         assertEquals(hose, order.getLineItems()[2]);
+
+        assertEquals((19.99* 2) + 44.99 + 38.49 , order.getTotal());
+        }
+
+
+    @Test
+    void shouldNotAddInvalidItems() {
+        LineItem grassSeed = new LineItem("Grass Seed", -5, 2);
+        boolean result = order.add(grassSeed);
+        assertFalse(result);
+
+        LineItem grassSeed1 = new LineItem("Grass Seed", 5, -2);
+        result = order.add(grassSeed);
+        assertFalse(result);
+        // 1. Add test shouldNotAddInvalidItems: confirm that it's not possible to add items with <= 0 quantity or < 0 price.
+        // 2. Test the order.getTotal() in various scenarios and confirm it's correct.
+        // 3. If you tackle `order.remove`, test the method thoroughly.
+
     }
-
-    // 1. Add test shouldNotAddInvalidItems: confirm that it's not possible to add items with <= 0 quantity or < 0 price.
-    // 2. Test the order.getTotal() in various scenarios and confirm it's correct.
-    // 3. If you tackle `order.remove`, test the method thoroughly.
-
 }
