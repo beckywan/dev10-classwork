@@ -9,5 +9,8 @@
         <module name="hash-exercises" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hash-exercises" target="1.11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

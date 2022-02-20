@@ -1,8 +1,10 @@
 import learn.Color;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 public class Exercise11 {
+
 
     public static void main(String[] args) {
         HashSet<Color> colors = new HashSet<>();
@@ -29,4 +31,5 @@ public class Exercise11 {
 
         System.out.println(colors.size());
     }
+
 }

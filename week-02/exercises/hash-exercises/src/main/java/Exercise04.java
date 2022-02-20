@@ -7,7 +7,10 @@ public class Exercise04 {
 
     public static void main(String[] args) {
         HashMap<String, Vehicle> vehicleMap = VehicleRepository.getMap();
+        Vehicle newCar = new Vehicle();
+        vehicleMap.put("newCarVIN", newCar);
 
+        System.out.println(String.valueOf(vehicleMap.get("newCarVIN")));
         // 1. Create a new Vehicle. Use a VIN that's easy to remember.
         // 2. Add the Vehicle to `vehicleMap` with the `put` method.
         // 3. Confirm the Vehicle was added by retrieving it with `get` and printing it to the console.
