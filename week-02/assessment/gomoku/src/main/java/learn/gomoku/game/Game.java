@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Game {
     private static Player playerOne;
     private static Player playerTwo;
-    private final static String EMPTY_CHARACTER = "-";
+    private final static String EMPTY_CHARACTER = "_";
     static char[][] board = new char[15][15];
 
     public static void run() {
@@ -64,19 +64,8 @@ public class Game {
 
     private static void playGame(Scanner console, Gomoku game, char[][] board) {
         Result result;
-        for (int row = 0; row < 15; row++) {
-            System.out.print("\n");
-            for (int col = 0; col < 15; col++) {
-                if (board[row][col] == 'B') {
-                    System.out.print("B");
-                } else if (board[row][col] == 'W') {
-                    System.out.print("W");
-                } else {
-                    System.out.print(EMPTY_CHARACTER);
-                }
-                System.out.print(" ");
-            }
-        }
+
+        printBoard(board);
         do {
             Stone stone = game.getCurrent().generateMove(game.getStones());
             Stone newStone = stone;
@@ -87,10 +76,10 @@ public class Game {
                 int row = Integer.parseInt(console.nextLine());
                 System.out.println("Column:");
                 int col = Integer.parseInt(console.nextLine());
-                newStone = new Stone(row, col, game.isBlacksTurn());
+                newStone = new Stone(row - 1, col - 1, game.isBlacksTurn());
             } else {
                 System.out.printf("%s places the stone down on row %s and column %s.%n",
-                        game.getCurrent().getName(), stone.getRow(), stone.getColumn());
+                        game.getCurrent().getName(), stone.getRow() + 1, stone.getColumn() + 1);
             }
 
             result = game.place(newStone);
@@ -104,22 +93,35 @@ public class Game {
             }
 
 
-            for (int row = 0; row < 15; row++) {
-                System.out.print("\n");
-                for (int col = 0; col < 15; col++) {
-                    if (board[row][col] == 'B') {
-                        System.out.print("B");
-                    } else if (board[row][col] == 'W') {
-                        System.out.print("W");
-                    } else {
-                        System.out.print(EMPTY_CHARACTER);
-                    }
-                    System.out.print(" ");
-                }
-            }
+            printBoard(board);
 
         } while (!game.isOver());
 
+    }
+
+    private static void printBoard(char[][] board) {
+        System.out.print("   ");
+        for (int i = 01; i < 16; i++) {
+            String s = String.format("%02d ", i);
+            System.out.printf(s);
+        }
+        int count = 1;
+        for (int row = 0; row < 15; row++) {
+            System.out.print("\n");
+            String s = String.format("%02d  ", count);
+            System.out.printf(s);
+            count++;
+            for (int col = 0; col < 15; col++) {
+                if (board[row][col] == 'B') {
+                    System.out.print("W");
+                } else if (board[row][col] == 'W') {
+                    System.out.print("B");
+                } else {
+                    System.out.print(EMPTY_CHARACTER);
+                }
+                System.out.print("  ");
+            }
+        }
     }
 
     private static void setUpPlayers(Scanner console) {
