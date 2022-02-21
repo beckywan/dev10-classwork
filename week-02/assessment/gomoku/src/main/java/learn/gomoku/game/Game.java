@@ -96,10 +96,13 @@ public class Game {
             result = game.place(newStone);
 
             if (!result.isSuccess()) {
-                System.out.println(result);
-            } else {
-                board[newStone.getRow()][newStone.getColumn()] = game.isBlacksTurn() ? 'B' : 'W';
+                System.out.println("Try again. Error: " + result.getMessage());
+            } else if (game.getWinner() == null) {
+            board[newStone.getRow()][newStone.getColumn()] = game.isBlacksTurn() ? 'B' : 'W';
+            } else if (game.getWinner() != null) {
+                board[newStone.getRow()][newStone.getColumn()] = !game.isBlacksTurn() ? 'B' : 'W';
             }
+
 
             for (int row = 0; row < 15; row++) {
                 System.out.print("\n");
