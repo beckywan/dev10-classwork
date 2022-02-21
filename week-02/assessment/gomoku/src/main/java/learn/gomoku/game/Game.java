@@ -71,9 +71,10 @@ public class Game {
                     System.out.print("B");
                 } else if (board[row][col] == 'W') {
                     System.out.print("W");
+                } else {
+                    System.out.print(EMPTY_CHARACTER);
                 }
-
-                System.out.print(EMPTY_CHARACTER);
+                System.out.print(" ");
             }
         }
         do {
@@ -107,9 +108,10 @@ public class Game {
                         System.out.print("B");
                     } else if (board[row][col] == 'W') {
                         System.out.print("W");
+                    } else {
+                        System.out.print(EMPTY_CHARACTER);
                     }
-
-                    System.out.print(EMPTY_CHARACTER);
+                    System.out.print(" ");
                 }
             }
 
