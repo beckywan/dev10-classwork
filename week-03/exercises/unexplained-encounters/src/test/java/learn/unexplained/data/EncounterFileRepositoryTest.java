@@ -5,37 +5,35 @@ import learn.unexplained.models.EncounterType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EncounterFileRepositoryTest {
 
+    static final String SEED_PATH = "./data/encounters-seed.csv";
     static final String TEST_PATH = "./data/encounters-test.csv";
-    final Encounter[] testEncounters = new Encounter[]{
-            new Encounter(1, EncounterType.UFO, "2020-01-01", "short test #1", 1),
-            new Encounter(2, EncounterType.CREATURE, "2020-02-01", "short test #2", 1),
-            new Encounter(3, EncounterType.SOUND, "2020-03-01", "short test #3", 1)
-    };
 
     EncounterRepository repository = new EncounterFileRepository(TEST_PATH);
 
     @BeforeEach
-    void setup() throws DataAccessException {
-        for (Encounter e : repository.findAll()) {
-            repository.deleteById(e.getEncounterId());
-        }
+    void setup() throws IOException {
+        Path seedPath = Paths.get(SEED_PATH);
+        Path testPath = Paths.get(TEST_PATH);
 
-        for (Encounter e : testEncounters) {
-            repository.add(e);
-        }
+        Files.copy(seedPath, testPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Test
-    void shouldFindAll() throws DataAccessException {
-        List<Encounter> encounters = repository.findAll();
-        Encounter[] actual = encounters.toArray(new Encounter[encounters.size()]);
-        assertArrayEquals(testEncounters, actual);
+    void findAll() throws DataAccessException {
+        List<Encounter> actual = repository.findAll();
+        assertEquals(3, actual.size());
     }
 
     @Test
@@ -54,4 +52,59 @@ class EncounterFileRepositoryTest {
         assertEquals(4, actual.getEncounterId());
     }
 
+    @Test
+    void shouldFindOneOfEachType() throws DataAccessException {
+        List<Encounter> one = repository.findByType(EncounterType.UFO);
+        assertEquals(1, one.size());
+        List<Encounter> two = repository.findByType(EncounterType.CREATURE);
+        assertEquals(1, two.size());
+        List<Encounter> three = repository.findByType(EncounterType.SOUND);
+        assertEquals(1, three.size());
+
+    }
+
+    @Test
+    void shouldBeEmptyForMissingType() throws DataAccessException {
+        List<Encounter> doesNotExist = repository.findByType(EncounterType.VISION);
+        assertEquals(new ArrayList<>(), doesNotExist);
+    }
+    @Test
+    void shouldUpdate() throws DataAccessException {
+        Encounter encounter = repository.findAll().get(2);
+        encounter.setDescription("testDescription");
+        encounter.setOccurrences(2);
+        encounter.setType(EncounterType.VISION);
+        encounter.setWhen("0000-00-00");
+        assertTrue(repository.update(encounter));
+
+        encounter = repository.findAll().get(2);
+        assertNotNull(encounter);
+        assertEquals("testDescription", encounter.getDescription());
+        assertEquals(2, encounter.getOccurrences());
+        assertEquals(EncounterType.VISION, encounter.getType());
+        assertEquals("0000-00-00", encounter.getWhen());
+
+
+    }
+
+    @Test
+    void shouldBeFalseForMissingUpdate() throws DataAccessException {
+    Encounter doesNotExist = new Encounter();
+    doesNotExist.setEncounterId(1000);
+    assertFalse(repository.update(doesNotExist));
+
+    }
+    @Test
+    void shouldDelete() throws DataAccessException {
+        int count = repository.findAll().size();
+        assertTrue(repository.deleteById(1));
+        assertEquals(count - 1, repository.findAll().size());
+
+    }
+
+    @Test
+    void shouldBeFalseForMissingDelete() throws DataAccessException {
+        int count = repository.findAll().size();
+        assertFalse(repository.deleteById(1000));
+    }
 }
