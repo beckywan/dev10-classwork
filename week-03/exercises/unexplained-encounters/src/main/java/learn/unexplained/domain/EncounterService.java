@@ -3,6 +3,7 @@ package learn.unexplained.domain;
 import learn.unexplained.data.DataAccessException;
 import learn.unexplained.data.EncounterRepository;
 import learn.unexplained.models.Encounter;
+import learn.unexplained.models.EncounterType;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class EncounterService {
         return repository.findAll();
     }
 
+
     public EncounterResult add(Encounter encounter) throws DataAccessException {
         EncounterResult result = validate(encounter);
         if (!result.isSuccess()) {
@@ -26,6 +28,16 @@ public class EncounterService {
         }
 
         // check for duplicate
+        EncounterResult result1 = checkForDuplicate(encounter, result);
+        if (result1 != null) return result1;
+
+        encounter = repository.add(encounter);
+        result.setPayload(encounter);
+        return result;
+    }
+
+
+    private EncounterResult checkForDuplicate(Encounter encounter, EncounterResult result) throws DataAccessException {
         List<Encounter> encounters = repository.findAll();
         for (Encounter e : encounters) {
             if (Objects.equals(encounter.getWhen(), e.getWhen())
@@ -35,11 +47,55 @@ public class EncounterService {
                 return result;
             }
         }
+        return null;
+    }
 
-        encounter = repository.add(encounter);
-        result.setPayload(encounter);
+
+    public List<Encounter> findByType(EncounterType type) throws DataAccessException {
+        return repository.findByType(type);
+    }
+
+
+    public EncounterResult update(Encounter encounter) throws DataAccessException {
+
+        EncounterResult result = validate(encounter);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        // check for duplicate
+        EncounterResult result1 = checkForDuplicate(encounter, result);
+        if (result1 != null) return result1;
+
+        if (encounter.getEncounterId() <= 0) {
+            result.addErrorMessage("Encounter ID must be greater than 0");
+        }
+
+        if (result.isSuccess()) {
+            if (repository.update(encounter)) {
+                result.setPayload(encounter);
+            } else {
+                String message = String.format(
+                        "Encounter ID %s was not found", encounter.getEncounterId());
+                result.addErrorMessage(message);
+            }
+        }
+
         return result;
     }
+
+
+    public EncounterResult deleteById(int encounterId) throws DataAccessException {
+        EncounterResult result = new EncounterResult();
+
+        if(!repository.deleteById(encounterId)) {
+            String message = String.format(
+                    "Encounter ID %s was not found", encounterId);
+            result.addErrorMessage(message);
+        }
+        return result;
+    }
+
 
     private EncounterResult validate(Encounter encounter) {
 
