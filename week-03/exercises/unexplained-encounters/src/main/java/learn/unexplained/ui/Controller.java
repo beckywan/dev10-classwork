@@ -4,6 +4,7 @@ import learn.unexplained.data.DataAccessException;
 import learn.unexplained.domain.EncounterResult;
 import learn.unexplained.domain.EncounterService;
 import learn.unexplained.models.Encounter;
+import learn.unexplained.models.EncounterType;
 
 import java.util.List;
 
@@ -40,6 +41,15 @@ public class Controller {
                 case ADD:
                     addEncounter();
                     break;
+                case DISPLAY_BY_TYPE:
+                    displayByType();
+                    break;
+                case UPDATE:
+                    updateEncounter();
+                    break;
+                case DElETE:
+                    deleteEncounter();
+                    break;
             }
         } while (option != MenuOption.EXIT);
     }
@@ -49,9 +59,47 @@ public class Controller {
         view.printAllEncounters(encounters);
     }
 
+    private void displayByType() throws DataAccessException {
+        view.printHeader(MenuOption.DISPLAY_BY_TYPE.getMessage());
+        EncounterType type = view.readType();
+        List<Encounter> encounters = service.findByType(type);
+        view.printByType(encounters);
+    }
+
+
     private void addEncounter() throws DataAccessException {
         Encounter encounter = view.makeEncounter();
         EncounterResult result = service.add(encounter);
+        view.printResult(result);
+    }
+
+    private void deleteEncounter() throws DataAccessException {
+        view.printHeader(MenuOption.DElETE.getMessage());
+
+        EncounterType type = view.readType();
+        List<Encounter> encounters = service.findByType(type);
+
+        int id = view.deleteEncounter(encounters);
+        if(id == 0) {
+            return;
+        }
+
+        EncounterResult result = service.deleteById(id);
+        view.printResult(result);
+    }
+
+    private void updateEncounter() throws DataAccessException {
+        view.printHeader(MenuOption.UPDATE.getMessage());
+
+        EncounterType type = view.readType();
+        List<Encounter> encounters = service.findByType(type);
+
+        Encounter encounter = view.updateEncounter(encounters);
+        if(encounter == null) {
+            return;
+        }
+
+        EncounterResult result = service.update(encounter);
         view.printResult(result);
     }
 }

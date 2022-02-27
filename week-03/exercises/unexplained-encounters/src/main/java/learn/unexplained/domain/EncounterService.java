@@ -92,6 +92,8 @@ public class EncounterService {
             String message = String.format(
                     "Encounter ID %s was not found", encounterId);
             result.addErrorMessage(message);
+        } else {
+            System.out.println("Success!");
         }
         return result;
     }

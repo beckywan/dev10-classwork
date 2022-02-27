@@ -47,10 +47,28 @@ public class View {
         }
     }
 
+    public void printByType(List<Encounter> encounters) {
+        printHeader(MenuOption.DISPLAY_BY_TYPE.getMessage());
+        if (encounters == null || encounters.size() == 0) {
+            System.out.println();
+            System.out.println("No encounters found.");
+        } else {
+            for (Encounter e : encounters) {
+                System.out.printf("%s. Type:%s, Occurrences:%s, When:%s, Desc:%s%n",
+                        e.getEncounterId(),
+                        e.getType(),
+                        e.getOccurrences(),
+                        e.getWhen(),
+                        e.getDescription());
+            }
+        }
+    }
+
+
     public void printResult(EncounterResult result) {
         if (result.isSuccess()) {
             if (result.getPayload() != null) {
-                System.out.printf("Encounter Id %s added.%n", result.getPayload().getEncounterId());
+                System.out.println("Success!");
             }
         } else {
             printHeader("Errors");
@@ -69,6 +87,60 @@ public class View {
         encounter.setDescription(readRequiredString("Description:"));
         return encounter;
     }
+
+    public int deleteEncounter(List<Encounter> encounters) {
+        printByType(encounters);
+        if (encounters == null || encounters.size() == 0) {
+            System.out.println();
+            System.out.println("No encounters found.");
+            return 0;
+        }
+
+        int encounterID = readInt("Encounter ID to delete: ");
+        for (Encounter e : encounters) {
+            if (e.getEncounterId() == encounterID) {
+                return encounterID;
+            }
+        }
+        return encounterID;
+    }
+
+    public Encounter updateEncounter(List<Encounter> encounters) {
+        printByType(encounters);
+        if (encounters == null || encounters.size() == 0) {
+            System.out.println();
+            System.out.println("No encounters found.");
+            return null;
+        }
+
+        int encounterID = readInt("Encounter ID to update: ");
+        for (Encounter e : encounters) {
+            if (e.getEncounterId() == encounterID) {
+                return update(e);
+            }
+        }
+        return null;
+    }
+
+    private Encounter update(Encounter encounter) {
+        String when = readString("When it occurred (" + encounter.getWhen() + "):");
+        if (when.trim().length() > 0) {
+            encounter.setWhen(when);
+        }
+
+        String occurrence = readString("Occurrences (" + encounter.getOccurrences() + "):");
+        if (occurrence.trim().length() > 0) {
+            encounter.setOccurrences(Integer.parseInt(occurrence));
+        }
+
+        String desc = readString("Description (" + encounter.getDescription() + "):");
+        if (desc.trim().length() > 0) {
+            encounter.setDescription(desc);
+        }
+
+        return encounter;
+    }
+
 
     private String readString(String message) {
         System.out.print(message);
@@ -114,7 +186,7 @@ public class View {
         return result;
     }
 
-    private EncounterType readType() {
+    public EncounterType readType() {
         int index = 1;
         for (EncounterType type : EncounterType.values()) {
             System.out.printf("%s. %s%n", index++, type);
