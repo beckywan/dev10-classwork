@@ -1,0 +1,4 @@
+id,section,row,column,installationYear,material,tracking
+1,Mountain,1,1,2000,AMORPHOUS_SILICON,yes
+2,Mountain,1,2,2002,AMORPHOUS_SILICON,yes
+3,Desert,1,1,2010,CADMIUM_TELLURIDE,no
