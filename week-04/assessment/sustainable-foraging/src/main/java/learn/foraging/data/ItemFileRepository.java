@@ -22,14 +22,11 @@ public class ItemFileRepository implements ItemRepository {
     public List<Item> findAll() {
         ArrayList<Item> result = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-
             reader.readLine(); // read header
-
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-
-                String[] fields = line.split(",", -1);
-                if (fields.length == 4) {
-                    result.add(deserialize(fields));
+                Item item = deserialize(line);
+                if (item != null) {
+                    result.add(item);
                 }
             }
         } catch (IOException ex) {
@@ -93,13 +90,17 @@ public class ItemFileRepository implements ItemRepository {
                 item.getDollarPerKilogram());
     }
 
-    private Item deserialize(String[] fields) {
-        Item result = new Item();
-        result.setId(Integer.parseInt(fields[0]));
-        result.setName(fields[1]);
-        result.setCategory(Category.valueOf(fields[2]));
-        result.setDollarPerKilogram(new BigDecimal(fields[3]));
-        return result;
+    private Item deserialize(String line) {
+        String[] fields = line.split(",", -1);
+        if (fields.length == 4) {
+            Item result = new Item();
+            result.setId(Integer.parseInt(fields[0]));
+            result.setName(fields[1]);
+            result.setCategory(Category.valueOf(fields[2]));
+            result.setDollarPerKilogram(new BigDecimal(fields[3]));
+            return result;
+        }
+        return null;
     }
 
     protected void writeAll(List<Item> items) throws DataException {

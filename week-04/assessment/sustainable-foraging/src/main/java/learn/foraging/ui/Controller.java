@@ -45,6 +45,9 @@ public class Controller {
                 case VIEW_FORAGES_BY_DATE:
                     viewByDate();
                     break;
+                case VIEW_FORAGERS_BY_STATE:
+                    ViewByState();
+                    break;
                 case VIEW_ITEMS:
                     viewItems();
                     break;
@@ -52,15 +55,13 @@ public class Controller {
                     addForage();
                     break;
                 case ADD_FORAGER:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    addForager();
                     break;
                 case ADD_ITEM:
                     addItem();
                     break;
                 case REPORT_KG_PER_ITEM:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    reportKgPerItem();
                     break;
                 case REPORT_CATEGORY_VALUE:
                     view.displayStatus(false, "NOT IMPLEMENTED");
@@ -73,11 +74,40 @@ public class Controller {
         } while (option != MainMenuOption.EXIT);
     }
 
+
+
     // top level menu
     private void viewByDate() {
         LocalDate date = view.getForageDate();
         List<Forage> forages = forageService.findByDate(date);
         view.displayForages(forages);
+        view.enterToContinue();
+    }
+
+    private void reportKgPerItem() {
+        view.displayHeader(MainMenuOption.REPORT_KG_PER_ITEM.getMessage());
+        LocalDate date = view.getForageDate();
+        List<Forage> forages = forageService.findByDate(date);
+        forageService.calculateKgPerItem(forages);
+        view.displayHeader("Total Kilogram per Item foraged on " + date);
+        view.displayEmpty(forages);
+        view.enterToContinue();
+    }
+
+    private void totalPerDay() {
+        view.displayHeader(MainMenuOption.REPORT_CATEGORY_VALUE.getMessage());
+        LocalDate date = view.getForageDate();
+        List<Forage> forages = forageService.findByDate(date);
+        forageService.calculateValuePerCategory(forages);
+        view.displayHeader("Total Kilogram per Item foraged on " + date);
+        view.displayEmpty(forages);
+        view.enterToContinue();
+    }
+
+    private void ViewByState() {
+        String state = view.getForagerState();
+        List<Forager> foragers = foragerService.findByState(state);
+        view.displayForagers(foragers);
         view.enterToContinue();
     }
 
@@ -89,6 +119,7 @@ public class Controller {
         view.displayItems(items);
         view.enterToContinue();
     }
+
 
     private void addForage() throws DataException {
         view.displayHeader(MainMenuOption.ADD_FORAGE.getMessage());
@@ -106,6 +137,18 @@ public class Controller {
             view.displayStatus(false, result.getErrorMessages());
         } else {
             String successMessage = String.format("Forage %s created.", result.getPayload().getId());
+            view.displayStatus(true, successMessage);
+        }
+    }
+
+    private void addForager() throws DataException {
+        view.displayHeader(MainMenuOption.ADD_FORAGER.getMessage());
+        Forager forager = view.makeForager();
+        Result<Forager> result = foragerService.add(forager);
+        if (!result.isSuccess()) {
+            view.displayStatus(false, result.getErrorMessages());
+        } else {
+            String successMessage = String.format("Forager %s created.", result.getPayload().getId());
             view.displayStatus(true, successMessage);
         }
     }

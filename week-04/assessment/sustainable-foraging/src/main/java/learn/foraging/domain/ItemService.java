@@ -3,6 +3,7 @@ package learn.foraging.domain;
 import learn.foraging.data.DataException;
 import learn.foraging.data.ItemRepository;
 import learn.foraging.models.Category;
+import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
 import java.math.BigDecimal;
@@ -24,7 +25,18 @@ public class ItemService {
     }
 
     public Result<Item> add(Item item) throws DataException {
+        Result<Item> result = validate(item);
 
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        result.setPayload(repository.add(item));
+
+        return result;
+    }
+
+    private Result<Item> validate(Item item) {
         Result<Item> result = new Result<>();
         if (item == null) {
             result.addErrorMessage("Item must not be null.");
@@ -38,19 +50,33 @@ public class ItemService {
             result.addErrorMessage(String.format("Item '%s' is a duplicate.", item.getName()));
         }
 
+        if (item.getCategory() == null) {
+            result.addErrorMessage("Category is required");
+        } else {
+            int categories = 0;
+            for (Category c : Category.values()) {
+                if (item.getCategory() == c) {
+                    categories++;
+                }
+            }
+            if (categories == 0) {
+                result.addErrorMessage("Correct Category type is required");
+            }
+        }
+
         if (item.getDollarPerKilogram() == null) {
             result.addErrorMessage("$/Kg is required.");
-        } else if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
-                || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
-            result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+        } else if (item.getCategory().equals(Category.EDIBLE) || item.getCategory().equals(Category.MEDICINAL)) {
+            if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
+                    || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
+                result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+            }
+        } else if (item.getCategory().equals(Category.INEDIBLE) || item.getCategory().equals(Category.POISONOUS)) {
+            if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) != 0)
+                result.addErrorMessage("Inedible or poisonous items' $/kr is $0\n");
         }
-
-        if (!result.isSuccess()) {
-            return result;
-        }
-
-        result.setPayload(repository.add(item));
 
         return result;
     }
+
 }

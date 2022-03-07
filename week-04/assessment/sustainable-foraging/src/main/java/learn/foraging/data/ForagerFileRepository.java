@@ -1,11 +1,11 @@
 package learn.foraging.data;
 
+import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOError;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 public class ForagerFileRepository implements ForagerRepository {
 
     private final String filePath;
+
+    public static final String HEADER = "id,first_name,last_name,state";
 
     public ForagerFileRepository(String filePath) {
         this.filePath = filePath;
@@ -52,7 +54,35 @@ public class ForagerFileRepository implements ForagerRepository {
                 .filter(i -> i.getState().equalsIgnoreCase(stateAbbr))
                 .collect(Collectors.toList());
     }
-    
+
+    @Override
+    public Forager add(Forager forager) throws DataException {
+        List<Forager> all = findAll();
+        forager.setId(java.util.UUID.randomUUID().toString());
+        all.add(forager);
+        writeAll(all);
+        return forager;
+    }
+
+    private void writeAll(List<Forager> foragers) throws DataException {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(HEADER);
+            for (Forager e : foragers) {
+                writer.println(serialize(e));
+            }
+        } catch (IOException ex) {
+            throw new DataException(ex.getMessage(), ex);
+        }
+    }
+
+    private String serialize(Forager forager) {
+        return String.format("%s,%s,%s,%s",
+                forager.getId(),
+                forager.getFirstName(),
+                forager.getLastName(),
+                forager.getState());
+    }
+
     private Forager deserialize(String[] fields) {
         Forager result = new Forager();
         result.setId(fields[0]);

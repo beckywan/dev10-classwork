@@ -9,11 +9,9 @@ import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ForageService {
 
@@ -43,15 +41,72 @@ public class ForageService {
         return result;
     }
 
+    public void calculateKgPerItem(List<Forage> forages) {
+        Map<Item, Double> kgPerItem = forages.stream()
+                .collect(Collectors.groupingBy(Forage::getItem,
+                        Collectors.summingDouble(h -> h.getKilograms())));
+
+
+        for (Item item : kgPerItem.keySet()) {
+            Optional<Forage> first = forages.stream()
+                    .filter(forage -> forage.getItem().equals(item))
+                    .findFirst();
+
+            if (first.isPresent()) {
+                Forage f = first.get();
+                System.out.printf("%s: %.2f kg%n", f.getItem().getName(), kgPerItem.get(item));
+
+            }
+        }
+
+    }
+
+
+    public void calculateValuePerCategory(List<Forage> forages) {
+        Map<Item, Double> valuePerItem = forages.stream()
+                .collect(Collectors.groupingBy(Forage::getItem,
+                        Collectors.summingDouble(h -> h.getValue().doubleValue())));
+
+//        for (Item item : valuePerItem.keySet()) {
+//            Optional<Forage> first = forages.stream()
+//                    .filter(forage -> forage.getItem().equals(item))
+//                    .findFirst();
+//
+//            if (first.isPresent()) {
+//                Forage f = first.get();
+//                System.out.printf("%s: %.2f kg%n", f.getItem().getName(), kgPerItem.get(item));
+//
+//            }
+//        }
+
+    }
+
     public Result<Forage> add(Forage forage) throws DataException {
         Result<Forage> result = validate(forage);
         if (!result.isSuccess()) {
             return result;
         }
 
+        LocalDate date = forage.getDate();
+        Result<Forage> result1 = checkForDuplicate(forage, result, date);
+        if (result1 != null) return result1;
+
         result.setPayload(forageRepository.add(forage));
 
         return result;
+    }
+
+    private Result<Forage> checkForDuplicate(Forage forage, Result<Forage> result, LocalDate date) throws DataException {
+        List<Forage> forages = forageRepository.findByDate(date);
+        for (Forage e : forages) {
+            if (Objects.equals(forage.getForager().getId(), e.getForager().getId())
+                    && Objects.equals(forage.getItem().getId(), e.getItem().getId())
+                    && Objects.equals(forage.getDate(), e.getDate())) {
+                result.addErrorMessage("Forage already exists.");
+                return result;
+            }
+        }
+        return null;
     }
 
     public int generate(LocalDate start, LocalDate end, int count) throws DataException {
@@ -120,6 +175,7 @@ public class ForageService {
         if (forage.getItem() == null) {
             result.addErrorMessage("Item is required.");
         }
+
         return result;
     }
 

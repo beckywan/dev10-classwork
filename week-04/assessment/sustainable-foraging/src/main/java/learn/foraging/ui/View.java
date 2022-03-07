@@ -8,7 +8,9 @@ import learn.foraging.models.Item;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class View {
 
@@ -37,6 +39,11 @@ public class View {
     public LocalDate getForageDate() {
         displayHeader(MainMenuOption.VIEW_FORAGES_BY_DATE.getMessage());
         return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
+    }
+
+    public String getForagerState() {
+        displayHeader(MainMenuOption.VIEW_FORAGERS_BY_STATE.getMessage());
+        return io.readRequiredString("Select a state: ");
     }
 
     public String getForagerNamePrefix() {
@@ -109,6 +116,16 @@ public class View {
         forage.setKilograms(io.readDouble(message, 0.001, 250.0));
         return forage;
     }
+
+    public Forager makeForager() {
+        Forager forager = new Forager();
+        forager.setFirstName(io.readRequiredString("First name: "));
+        forager.setLastName(io.readRequiredString("Last name: "));
+        forager.setState(io.readRequiredString("State abbreviation: "));
+        return forager;
+    }
+
+
 
     public Item makeItem() {
         displayHeader(MainMenuOption.ADD_ITEM.getMessage());
@@ -193,4 +210,27 @@ public class View {
             io.printf("%s: %s, %s, %.2f $/kg%n", item.getId(), item.getName(), item.getCategory(), item.getDollarPerKilogram());
         }
     }
+
+    public void displayForagers(List<Forager> foragers) {
+        if (foragers == null || foragers.isEmpty()) {
+            io.println("No foragers found.");
+            return;
+        }
+        for (Forager forager : foragers) {
+            io.printf("ID: %s || Name: %s %s || State: %s%n",
+                    forager.getId(),
+                    forager.getFirstName(),
+                    forager.getLastName(),
+                    forager.getState());
+        }
+    }
+
+    public void displayEmpty(List<Forage> forages) {
+        if (forages == null || forages.isEmpty()) {
+            io.println("No foragers found.");
+            return;
+        }
+
+    }
+
 }
