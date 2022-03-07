@@ -70,5 +70,17 @@ class ForageServiceTest {
         assertFalse(result.isSuccess());
     }
 
+    @Test
+    void shouldNotAddDuplicate() throws DataException {
+        Forage forage = new Forage();
+        forage.setDate(LocalDate.of(2020, 6, 26));
+        forage.setForager(ForagerRepositoryDouble.FORAGER);
+        forage.setItem(ItemRepositoryDouble.ITEM);
+        forage.setKilograms(1.25);
+
+        Result<Forage> result = service.add(forage);
+        assertFalse(result.isSuccess());
+
+    }
 
 }
