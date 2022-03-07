@@ -4,10 +4,12 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ForageRepository;
 import learn.foraging.data.ForagerRepository;
 import learn.foraging.data.ItemRepository;
+import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,18 +69,22 @@ public class ForageService {
                 .collect(Collectors.groupingBy(Forage::getItem,
                         Collectors.summingDouble(h -> h.getValue().doubleValue())));
 
-//        for (Item item : valuePerItem.keySet()) {
-//            Optional<Forage> first = forages.stream()
-//                    .filter(forage -> forage.getItem().equals(item))
-//                    .findFirst();
-//
-//            if (first.isPresent()) {
-//                Forage f = first.get();
-//                System.out.printf("%s: %.2f kg%n", f.getItem().getName(), kgPerItem.get(item));
-//
-//            }
-//        }
+        BigDecimal edibleValue = new BigDecimal(0);
+        BigDecimal medValue = new BigDecimal(0);
 
+
+        for (Item item : valuePerItem.keySet()) {
+            if (item.getCategory() == Category.EDIBLE) {
+                edibleValue = edibleValue.add(new BigDecimal(valuePerItem.get(item)));
+            } else if (item.getCategory() == Category.MEDICINAL) {
+                medValue = medValue.add(new BigDecimal(valuePerItem.get(item)));
+            }
+        }
+
+        System.out.printf("%s: $%.2f%n", Category.EDIBLE, edibleValue);
+        System.out.printf("%s: $%.2f%n", Category.MEDICINAL, medValue);
+        System.out.printf("%s: $0.00%n", Category.INEDIBLE);
+        System.out.printf("%s: $0.00%n", Category.POISONOUS);
     }
 
     public Result<Forage> add(Forage forage) throws DataException {

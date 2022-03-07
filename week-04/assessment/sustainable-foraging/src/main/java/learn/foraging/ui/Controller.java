@@ -64,8 +64,7 @@ public class Controller {
                     reportKgPerItem();
                     break;
                 case REPORT_CATEGORY_VALUE:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    totalPerDay();
                     break;
                 case GENERATE:
                     generate();
