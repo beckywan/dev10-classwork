@@ -31,9 +31,8 @@ class ForagerFileRepositoryTest {
 
     @Test
     void shouldFindAll() {
-        ForagerFileRepository repo = new ForagerFileRepository("./data/foragers.csv");
-        List<Forager> all = repo.findAll();
-        assertEquals(1000, all.size());
+        List<Forager> all = repository.findAll();
+        assertEquals(3, all.size());
     }
 
     @Test

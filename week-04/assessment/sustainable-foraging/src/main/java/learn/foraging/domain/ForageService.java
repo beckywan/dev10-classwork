@@ -48,7 +48,6 @@ public class ForageService {
                 .collect(Collectors.groupingBy(Forage::getItem,
                         Collectors.summingDouble(h -> h.getKilograms())));
 
-
         for (Item item : kgPerItem.keySet()) {
             Optional<Forage> first = forages.stream()
                     .filter(forage -> forage.getItem().equals(item))
