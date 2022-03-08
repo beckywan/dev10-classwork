@@ -116,4 +116,5 @@ class NonOverlappingMicroLeaseScheduleTest {
             end = start.plusDays(1);
         }
     }
+
 }
