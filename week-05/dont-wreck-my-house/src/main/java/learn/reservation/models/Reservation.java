@@ -14,6 +14,16 @@ public class Reservation {
     private Host host;
     private BigDecimal total;
 
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    private String UUID;
+
 
     public int getId() {
         return id;

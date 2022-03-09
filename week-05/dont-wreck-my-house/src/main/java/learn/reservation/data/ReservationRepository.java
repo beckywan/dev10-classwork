@@ -7,10 +7,8 @@ import java.util.List;
 
 public interface ReservationRepository {
 
-    List<Reservation> findAll();
-
-    List<Reservation> findById(String id);
-    //in data it's through host id;  user uses email
+    List<Reservation> findByUuid(String uuid);
+    //uses Host UUID
 
     Boolean update(Reservation reservation) throws DataException;
 

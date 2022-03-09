@@ -19,16 +19,15 @@ public class ReservationFileRepository implements ReservationRepository{
     public ReservationFileRepository(String directory) {
         this.directory = directory;
     }
-    
-    @Override
-    public List<Reservation> findAll() {
-        return null;
+
+    private String getFilePath(String uuid) {
+        return Paths.get(directory, uuid + ".csv").toString();
     }
 
     @Override
-    public List<Reservation> findById(String id) {
+    public List<Reservation> findByUuid(String uuid) {
         ArrayList<Reservation> result = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(id)))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(uuid)))) {
 
             reader.readLine(); // read header
 
@@ -36,7 +35,7 @@ public class ReservationFileRepository implements ReservationRepository{
 
                 String[] fields = line.split(",", -1);
                 if (fields.length == 5) {
-                    result.add(deserialize(fields));
+                    result.add(deserialize(fields, uuid));
                 }
             }
         } catch (IOException ex) {
@@ -46,30 +45,26 @@ public class ReservationFileRepository implements ReservationRepository{
     }
 
     @Override
+    public Reservation add(Reservation reservation) throws DataException {
+        List<Reservation> all = findByUuid(reservation.getUUID());
+        all.add(reservation);
+        writeAll(all, reservation.getUUID());
+        return reservation;
+    }
+
+    @Override
     public Boolean update(Reservation reservation) throws DataException {
-        List<Reservation> all = findById(reservation.getHost().getId());
+        List<Reservation> all = findByUuid(reservation.getUUID());
         for (int i = 0; i < all.size(); i++) {
-            if (Objects.equals(all.get(i).getId(), reservation.getHost().getId())) {
+            if (Objects.equals(all.get(i).getId(), reservation.getId())) {
                 all.set(i, reservation);
-                writeAll(all, reservation.getHost().getId());
+                writeAll(all, reservation.getUUID());
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public Reservation add(Reservation reservation) throws DataException {
-        List<Reservation> all = findById(reservation.getHost().getId());
-        reservation.getHost().setId(java.util.UUID.randomUUID().toString());
-        all.add(reservation);
-        writeAll(all, reservation.getHost().getId());
-        return reservation;
-    }
-    
-    private String getFilePath(String id) {
-        return Paths.get(directory, id + ".csv").toString();
-    }
 
     private void writeAll(List<Reservation> reservations, String id) throws DataException {
         try (PrintWriter writer = new PrintWriter(getFilePath(id))) {
@@ -95,9 +90,10 @@ public class ReservationFileRepository implements ReservationRepository{
 
     //id,start_date,end_date,guest_id,total
 
-    private Reservation deserialize(String[] fields) {
+    private Reservation deserialize(String[] fields, String uuid) {
         Reservation result = new Reservation();
         result.setId(Integer.parseInt(fields[0]));
+        result.setUUID(uuid);
         result.setStartDate(LocalDate.parse(fields[1]));
         result.setEndDate(LocalDate.parse(fields[2]));
 
@@ -105,7 +101,12 @@ public class ReservationFileRepository implements ReservationRepository{
         guest.setId(Integer.parseInt(fields[3]));
         result.setGuest(guest);
 
+        Host host = new Host();
+        host.setId(uuid);
+        result.setGuest(guest);
+
         result.setTotal(new BigDecimal(fields[4]));
+
         return result;
     }
 }

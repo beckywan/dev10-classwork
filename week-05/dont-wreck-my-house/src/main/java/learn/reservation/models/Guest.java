@@ -3,6 +3,7 @@ package learn.reservation.models;
 public class Guest {
 
     //guest_id,first_name,last_name,email,phone,state
+    //f
 
     private int id;
     private String firstName;
