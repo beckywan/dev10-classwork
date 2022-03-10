@@ -1,6 +1,10 @@
 package learn.reservation.models;
 
+import org.springframework.cglib.core.Local;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class Reservation {
@@ -72,5 +76,27 @@ public class Reservation {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
+    public BigDecimal getValue() {
+        if (host == null || host.getStandardRate() == null || host.getWeekendRate() == null) {
+            return BigDecimal.ZERO;
+        }
+
+        LocalDate date = startDate;
+        BigDecimal total = BigDecimal.ZERO;
+
+        while (!date.isAfter(endDate)) {
+            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                total = total.add(host.getWeekendRate());
+            } else {
+                total = total.add(host.getStandardRate());
+            }
+            date.plusDays(1);
+        }
+
+        return total.setScale(2, RoundingMode.HALF_UP);
+
+    }
+
 
 }
