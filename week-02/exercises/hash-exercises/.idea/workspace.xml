@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e648c31-8e68-4a20-b99e-23ccc8e8cf9a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/hash-exercises.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Exercise13.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/learn/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/cars.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/cars.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise01.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise01.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise02.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise02.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise03.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise03.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise04.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise04.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise05.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise05.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise06.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise06.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise07.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise07.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise08.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise08.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise09.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise09.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise10.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise10.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise11.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise11.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Exercise12.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exercise12.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/learn/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/learn/Color.java" afterDir="false" />
-    </list>
+    <list default="true" id="4e648c31-8e68-4a20-b99e-23ccc8e8cf9a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,6 +40,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../assessment/gomoku" />
   </component>
   <component name="RunManager" selected="Application.Exercise13">
     <configuration name="Exercise09" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">

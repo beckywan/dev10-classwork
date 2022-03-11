@@ -84,7 +84,7 @@ public class PanelService {
     public PanelResult deleteById(int panelId) throws DataException {
         PanelResult result = new PanelResult();
 
-        if(!repository.deleteById(panelId)) {
+        if (!repository.deleteById(panelId)) {
             String message = String.format(
                     "Panel ID %s was not found", panelId);
             result.addErrorMessage(message);
@@ -109,21 +109,21 @@ public class PanelService {
 
         if (panel.getMaterial() == null) {
             result.addErrorMessage("Correct material type is required");
-        }
-
-        int materials = 0;
-        for (Material m : Material.values()) {
-            if (panel.getMaterial() == m) {
-                materials++;
+        } else {
+            int materials = 0;
+            for (Material m : Material.values()) {
+                if (panel.getMaterial() == m) {
+                    materials++;
+                }
             }
-        }
-        if (materials == 0) {
-            result.addErrorMessage("Correct material type is required");
+            if (materials == 0) {
+                result.addErrorMessage("Correct material type is required");
+            }
         }
 
         if (!(panel.getTracking().equalsIgnoreCase("yes") ||
                 panel.getTracking().equalsIgnoreCase("no"))) {
-                result.addErrorMessage("Panel tracking information is required");
+            result.addErrorMessage("Panel tracking information is required");
         }
 
         if (panel.getRow() <= 0 || panel.getRow() > 250) {

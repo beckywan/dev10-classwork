@@ -130,4 +130,17 @@ class ReservationFileRepositoryTest {
 
     }
 
+    @Test
+    void shouldDelete() throws DataException {
+        Reservation one = repository.findByUuid(id).get(1);
+        assertTrue(repository.delete(one));
+    }
+
+    @Test
+    void shouldNotDeleteNonExisting() throws DataException {
+        Reservation doesNotExist = new Reservation();
+        doesNotExist.setId(1000);
+        assertFalse(repository.delete(doesNotExist));
+    }
+
 }

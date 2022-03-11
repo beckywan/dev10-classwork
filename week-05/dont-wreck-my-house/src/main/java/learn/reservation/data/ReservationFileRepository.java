@@ -53,11 +53,24 @@ public class ReservationFileRepository implements ReservationRepository{
     }
 
     @Override
-    public Boolean update(Reservation reservation) throws DataException {
+    public boolean update(Reservation reservation) throws DataException {
         List<Reservation> all = findByUuid(reservation.getUUID());
         for (int i = 0; i < all.size(); i++) {
             if (Objects.equals(all.get(i).getId(), reservation.getId())) {
                 all.set(i, reservation);
+                writeAll(all, reservation.getUUID());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Reservation reservation) throws DataException {
+        List<Reservation> all = findByUuid(reservation.getUUID());
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == reservation.getId()) {
+                all.remove(i);
                 writeAll(all, reservation.getUUID());
                 return true;
             }

@@ -10,9 +10,11 @@ public interface ReservationRepository {
     List<Reservation> findByUuid(String uuid);
     //uses Host UUID
 
-    Boolean update(Reservation reservation) throws DataException;
+    boolean update(Reservation reservation) throws DataException;
 
     Reservation add(Reservation reservation) throws DataException;
+
+    boolean delete(Reservation reservation) throws DataException;
 
 
 }

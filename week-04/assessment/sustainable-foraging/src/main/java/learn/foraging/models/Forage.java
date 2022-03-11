@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 public class Forage {
 
+    //  id,forager_id,item_id,kg
+
     private String id;
     private LocalDate date;
     private Forager forager;

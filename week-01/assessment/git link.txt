@@ -1,0 +1,1 @@
+https://github.com/beckywan/dev10-classwork/blob/main/week-01/assessment/capsuleHotel/src/hotel.java

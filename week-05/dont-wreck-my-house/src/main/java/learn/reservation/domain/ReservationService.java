@@ -24,7 +24,7 @@ public class ReservationService {
         this.hostRepository = hostRepository;
     }
 
-    public List<Reservation> findByDate(String uuid) {
+    public List<Reservation> findByUuid(String uuid) {
 
         Map<Integer, Guest> guestMap = guestRepository.findAll().stream()
                 .collect(Collectors.toMap(i -> i.getId(), i -> i));
@@ -37,6 +37,36 @@ public class ReservationService {
             reservation.setHost(hostMap.get(reservation.getHost().getId()));
         }
 
+        return result;
+    }
+
+    public Result<Reservation> delete(Reservation reservation) throws DataException {
+        Result<Reservation> result = new Result<>();
+
+        if (!reservationRepository.delete(reservation)) {
+            String message = String.format(
+                    "Reservation ID %s was not found.", reservation.getId());
+            result.addErrorMessage(message);
+        } else {
+            System.out.printf("Success! Reservation ID %s was deleted.", reservation.getId());
+        }
+        return result;
+    }
+
+    public Result<Reservation> update(Reservation reservation) throws DataException {
+
+        Result<Reservation> result = validate(reservation);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        if (!reservationRepository.update(reservation)) {
+            String message = String.format(
+                    "Reservation ID %s was not found.", reservation.getId());
+            result.addErrorMessage(message);
+        } else {
+            System.out.printf("Success! Reservation ID %s was updated.", reservation.getId());
+        }
         return result;
     }
     
