@@ -45,6 +45,11 @@ public class ReservationRepositoryDouble implements ReservationRepository{
     }
 
     @Override
+    public BigDecimal getValue(Reservation reservation) {
+        return null;
+    }
+
+    @Override
     public boolean update(Reservation reservation) throws DataException {
         return false;
     }

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Reservation {
 
@@ -77,26 +78,18 @@ public class Reservation {
         this.total = total;
     }
 
-    public BigDecimal getValue() {
-        if (host == null || host.getStandardRate() == null || host.getWeekendRate() == null) {
-            return BigDecimal.ZERO;
-        }
 
-        LocalDate date = startDate;
-        BigDecimal total = BigDecimal.ZERO;
-
-        while (!date.isAfter(endDate)) {
-            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                total = total.add(host.getWeekendRate());
-            } else {
-                total = total.add(host.getStandardRate());
-            }
-            date.plusDays(1);
-        }
-
-        return total.setScale(2, RoundingMode.HALF_UP);
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return id == that.id && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(guest, that.guest) && Objects.equals(host, that.host) && Objects.equals(total, that.total) && Objects.equals(UUID, that.UUID);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDate, endDate, guest, host, total, UUID);
+    }
 
 }

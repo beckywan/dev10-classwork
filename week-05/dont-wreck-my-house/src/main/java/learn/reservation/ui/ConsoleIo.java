@@ -109,6 +109,20 @@ public class ConsoleIo {
         }
     }
 
+    public LocalDate readDate(String prompt) {
+        String input = readString(prompt);
+        if (!input.isBlank()) {
+            while (true) {
+                try {
+                    return (LocalDate.parse(input, formatter));
+                } catch (DateTimeParseException ex) {
+                    println(INVALID_DATE);
+                }
+            }
+        }
+        return null;
+    }
+
     public BigDecimal readBigDecimal(String prompt) {
         while (true) {
             String input = readRequiredString(prompt);

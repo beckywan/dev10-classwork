@@ -171,7 +171,6 @@ public class Controller {
         }
     }
 
-    // support methods
     private Forager getForager() {
         String lastNamePrefix = view.getForagerNamePrefix();
         List<Forager> foragers = foragerService.findByLastName(lastNamePrefix);

@@ -143,4 +143,16 @@ class ReservationFileRepositoryTest {
         assertFalse(repository.delete(doesNotExist));
     }
 
+    @Test
+    void shouldCalculateValue() {
+        Reservation one = repository.findByUuid(id).get(1);
+        Host host = new Host();
+        host.setId(id);
+        host.setStandardRate(BigDecimal.valueOf(340));
+        host.setWeekendRate(BigDecimal.valueOf(425));
+        one.setHost(host);
+        assertEquals(new BigDecimal(1020.00).setScale(2), repository.getValue(one));
+    }
+
+
 }

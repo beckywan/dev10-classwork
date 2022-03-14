@@ -2,8 +2,10 @@ package learn.reservation.domain;
 
 import learn.reservation.data.HostRepository;
 import learn.reservation.models.Host;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
+import java.util.Objects;
 
 public class HostService {
 
@@ -18,9 +20,10 @@ public class HostService {
     }
 
     public Host findByEmail(String email) {
-        return repository.findByEmail(email);
+        Host host = repository.findByEmail(email);
+        if (host == null) {
+            System.out.println("No host found.");
+        }
+        return host;
     }
-
-
-
 }

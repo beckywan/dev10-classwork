@@ -8,6 +8,7 @@ import learn.reservation.models.Guest;
 import learn.reservation.models.Host;
 import learn.reservation.models.Reservation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,13 @@ public class ReservationService {
             reservation.setHost(hostMap.get(reservation.getHost().getId()));
         }
 
-        return result;
+        return result.stream().sorted((o1, o2)->o1.getStartDate().
+                        compareTo(o2.getStartDate())).
+                collect(Collectors.toList());
+    }
+
+    public BigDecimal getValue(Reservation reservation) {
+        return reservationRepository.getValue(reservation);
     }
 
     public Result<Reservation> delete(Reservation reservation) throws DataException {
@@ -47,9 +54,14 @@ public class ReservationService {
             String message = String.format(
                     "Reservation ID %s was not found.", reservation.getId());
             result.addErrorMessage(message);
-        } else {
-            System.out.printf("Success! Reservation ID %s was deleted.", reservation.getId());
         }
+
+        if (reservation.getStartDate().isBefore(LocalDate.now())
+                || reservation.getStartDate().isBefore(LocalDate.now())) {
+           result.addErrorMessage("Can not delete past reservation.");
+        }
+
+        result.setPayload(reservation);
         return result;
     }
 
@@ -64,9 +76,9 @@ public class ReservationService {
             String message = String.format(
                     "Reservation ID %s was not found.", reservation.getId());
             result.addErrorMessage(message);
-        } else {
-            System.out.printf("Success! Reservation ID %s was updated.", reservation.getId());
         }
+
+        result.setPayload(reservation);
         return result;
     }
     
@@ -121,7 +133,7 @@ public class ReservationService {
         return result;
     }
 
-    private Result<Reservation> validateFields(Reservation reservation, Result<Reservation> result) {
+    private void validateFields(Reservation reservation, Result<Reservation> result) {
         if (reservation.getStartDate().isBefore(LocalDate.now())) {
             result.addErrorMessage("Reservation date must be in the future.");
         }
@@ -137,10 +149,12 @@ public class ReservationService {
             if ((reservation.getStartDate().isBefore(startExist) && reservation.getEndDate().isAfter(startExist))
                     || (reservation.getStartDate().isAfter(startExist) && reservation.getStartDate().isBefore(endExist))){
                 result.addErrorMessage("Reservation dates can not overlap existing reservation dates.");
-                return result;
+            } else if (reservation.getStartDate().isEqual(startExist) || reservation.getStartDate().isEqual(endExist) ||
+                    reservation.getEndDate().isEqual(startExist) || reservation.getEndDate().isEqual(endExist)){
+                result.addErrorMessage("Reservation dates can not overlap existing reservation dates.");
             }
         }
-        return result;
+        //return result;
     }
 
     private void validateChildrenExist(Reservation reservation, Result<Reservation> result) {

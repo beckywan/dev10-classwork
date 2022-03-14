@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+
+    <bean id="guestRepository" class="learn.reservation.data.GuestFileRepository">
+        <constructor-arg value="./dont-wreck-my-house-data/guests.csv"/>
+    </bean>
+
+    <bean id="reservationRepository" class="learn.reservation.data.ReservationFileRepository">
+        <constructor-arg value="./dont-wreck-my-house-data/reservations"/>
+    </bean>
+
+    <bean id="hostRepository" class="learn.reservation.data.HostFileRepository">
+        <constructor-arg value="./dont-wreck-my-house-data/hosts.csv"/>
+    </bean>
+
+
+    <bean id="guestService" class="learn.reservation.domain.GuestService">
+        <constructor-arg ref="guestRepository"/>
+    </bean>
+
+    <bean id="reservationService" class="learn.reservation.domain.ReservationService">
+        <constructor-arg ref="reservationRepository"/>
+        <constructor-arg ref="guestRepository"/>
+        <constructor-arg ref="hostRepository"/>
+    </bean>
+
+    <bean id="hostService" class="learn.reservation.domain.HostService">
+        <constructor-arg ref="hostRepository"/>
+    </bean>
+
+    <bean id="io" class="learn.reservation.ui.ConsoleIo"/>
+
+
+    <bean id="view" class="learn.reservation.ui.View">
+        <constructor-arg ref="io"/>
+    </bean>
+
+
+    <bean class="learn.reservation.ui.Controller">
+        <constructor-arg ref="guestService"/>
+        <constructor-arg ref="reservationService"/>
+        <constructor-arg ref="hostService"/>
+        <constructor-arg ref="view"/>
+    </bean>
+
+
+</beans>

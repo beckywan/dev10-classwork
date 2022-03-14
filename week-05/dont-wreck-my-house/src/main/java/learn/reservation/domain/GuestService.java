@@ -2,6 +2,7 @@ package learn.reservation.domain;
 
 import learn.reservation.data.GuestRepository;
 import learn.reservation.models.Guest;
+import learn.reservation.models.Host;
 
 import java.util.List;
 
@@ -17,8 +18,11 @@ public class GuestService {
     }
 
     public Guest findByEmail(String email) {
-        return repository.findByEmail(email);
+        Guest guest = repository.findByEmail(email);
+        if (guest == null) {
+            System.out.println("No guest found.");
+        }
+        return guest;
     }
-
-
 }
+

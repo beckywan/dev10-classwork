@@ -6,8 +6,11 @@ import learn.reservation.models.Reservation;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +50,13 @@ public class ReservationFileRepository implements ReservationRepository{
     @Override
     public Reservation add(Reservation reservation) throws DataException {
         List<Reservation> all = findByUuid(reservation.getUUID());
+        int nextId = all.stream()
+                .mapToInt(Reservation::getId)
+                .max()
+                .orElse(0) + 1;
+
+        reservation.setId(nextId);
+
         all.add(reservation);
         writeAll(all, reservation.getUUID());
         return reservation;
@@ -77,6 +87,26 @@ public class ReservationFileRepository implements ReservationRepository{
         }
         return false;
     }
+
+    public BigDecimal getValue(Reservation reservation) {
+        LocalDate date = reservation.getStartDate();
+        BigDecimal total = BigDecimal.ZERO;
+
+        long difference = date.until(reservation.getEndDate(), ChronoUnit.DAYS);
+        for (long i = 0; i < difference; i++) {
+            if (date.plusDays(i).getDayOfWeek() == DayOfWeek.SATURDAY) {
+                total = total.add(reservation.getHost().getWeekendRate());
+            } else if (date.plusDays(i).getDayOfWeek()  == DayOfWeek.SUNDAY) {
+                total = total.add(reservation.getHost().getWeekendRate());
+            } else {
+                total = total.add(reservation.getHost().getStandardRate());
+            }
+        }
+
+        return total.setScale(2, RoundingMode.HALF_UP);
+
+    }
+
 
 
     private void writeAll(List<Reservation> reservations, String id) throws DataException {
@@ -116,7 +146,7 @@ public class ReservationFileRepository implements ReservationRepository{
 
         Host host = new Host();
         host.setId(uuid);
-        result.setGuest(guest);
+        result.setHost(host);
 
         result.setTotal(new BigDecimal(fields[4]));
 
