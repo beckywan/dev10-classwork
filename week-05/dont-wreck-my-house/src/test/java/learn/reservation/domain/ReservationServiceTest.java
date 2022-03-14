@@ -19,6 +19,8 @@ class ReservationServiceTest {
             new GuestRepositoryDouble(),
             new HostRepositoryDouble());
 
+
+
     @Test
     void shouldAdd() throws DataException {
         Reservation reservation = new Reservation();
@@ -84,23 +86,58 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldUpdate() {
+    void shouldUpdate() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(1);
+        reservation.setUUID("test uuid");
+        reservation.setStartDate(LocalDate.now());
+        reservation.setEndDate(LocalDate.now().plusWeeks(2));
+        reservation.setTotal(new BigDecimal(500));
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
 
+        Result<Reservation> result = service.update(reservation);
+        assertTrue(result.isSuccess());
+        assertNotNull(result.getPayload());
+        assertEquals(1, result.getPayload().getId());
 
     }
 
     @Test
-    void shouldNotUpdateOverlappingDates() {
+    void shouldNotUpdateOverlappingDates() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(1);
+        reservation.setUUID("test uuid");
+        reservation.setStartDate(LocalDate.of(2022, 6, 26));
+        reservation.setEndDate(LocalDate.now().plusDays(2));
+        reservation.setTotal(new BigDecimal(500));
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+
+        Result<Reservation> result = service.update(reservation);
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
 
     }
 
     @Test
-    void shouldDelete() {
+    void shouldDelete() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(2);
+        reservation.setUUID("test uuid");
+        reservation.setStartDate(LocalDate.now());
+        reservation.setEndDate(LocalDate.now().plusWeeks(2));
+        reservation.setTotal(new BigDecimal(500));
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
 
-    }
+        Result<Reservation> result = service.add(reservation);
+        assertTrue(result.isSuccess());
+        assertNotNull(result.getPayload());
+        assertEquals(2, result.getPayload().getId());
 
-    @Test
-    void shouldNotDeleteNonexistentReservation() {
+        Result<Reservation> actual = service.delete(reservation);
+        assertTrue(result.isSuccess());
+        assertNotNull(result.getPayload());    }
 
-    }
 }

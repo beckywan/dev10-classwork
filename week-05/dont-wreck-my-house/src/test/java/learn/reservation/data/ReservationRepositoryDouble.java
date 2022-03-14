@@ -41,7 +41,8 @@ public class ReservationRepositoryDouble implements ReservationRepository{
 
     @Override
     public boolean delete(Reservation reservation) throws DataException {
-        return false;
+        return reservation.getId() == 1;
+
     }
 
     @Override
@@ -51,6 +52,6 @@ public class ReservationRepositoryDouble implements ReservationRepository{
 
     @Override
     public boolean update(Reservation reservation) throws DataException {
-        return false;
+        return reservation.getId() == 1;
     }
 }
