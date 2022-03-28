@@ -72,9 +72,7 @@ public class SecurityClearanceJdbcTemplateRepository implements SecurityClearanc
     }
 
     @Override
-    @Transactional
     public boolean deleteById(int securityClearanceId) {
-       // jdbcTemplate.update("delete from agency_agent where security_clearance_id = ?", securityClearanceId);
         return jdbcTemplate.update("delete from security_clearance where security_clearance_id = ?", securityClearanceId) > 0;
     }
 }
