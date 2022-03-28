@@ -1,8 +1,11 @@
 package learn.field_agent.domain;
 
+import learn.field_agent.data.AgencyAgentJdbcTemplateRepository;
+import learn.field_agent.data.AgencyAgentRepository;
 import learn.field_agent.data.SecurityClearanceRepository;
-import learn.field_agent.models.Agency;
 import learn.field_agent.models.SecurityClearance;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,8 +62,20 @@ public class SecurityClearanceService {
         return result;
     }
 
-    public boolean deleteById(int securityClearanceId) {
-        return repository.deleteById(securityClearanceId);
+
+    private JdbcTemplate jdbcTemplate;
+
+    public Result<SecurityClearance> deleteById(int securityClearanceId) {
+        Result<SecurityClearance> result = new Result<>();
+
+        int count = jdbcTemplate.queryForObject(
+                "select count(*) from agency_agent where security_clearance_id = ?;", Integer.class, securityClearanceId);
+        if (count > 0) {
+            result.addMessage("Security clearance is in use and can not be deleted.", ResultType.INVALID);
+            return result;
+        }
+
+        return result;
     }
 
     private Result<SecurityClearance> validate(SecurityClearance securityClearance) {

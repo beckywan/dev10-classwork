@@ -1,11 +1,37 @@
 package learn.field_agent.models;
 
+import java.util.Objects;
+
 public class Alias {
+    public Alias(int aliasId, String name, String persona, int agentId) {
+        this.aliasId = aliasId;
+        this.name = name;
+        this.persona = persona;
+        this.agentId = agentId;
+    }
+
+    public Alias() {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Alias alias = (Alias) o;
+        return aliasId == alias.aliasId && agentId == alias.agentId && name.equals(alias.name) && Objects.equals(persona, alias.persona);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(aliasId, name, persona, agentId);
+    }
 
     private int aliasId;
     private String name;
     private String persona;
     private int agentId;
+
 
     public int getAliasId() {
         return aliasId;

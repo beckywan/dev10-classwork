@@ -3,7 +3,9 @@ package learn.field_agent.domain;
 import learn.field_agent.data.AliasRepository;
 import learn.field_agent.models.Alias;
 import learn.field_agent.models.SecurityClearance;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AliasService {
     private final AliasRepository repository;
 

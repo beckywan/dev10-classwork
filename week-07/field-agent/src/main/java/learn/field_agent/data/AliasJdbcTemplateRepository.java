@@ -7,11 +7,13 @@ import learn.field_agent.models.SecurityClearance;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class AliasJdbcTemplateRepository implements AliasRepository{
     private final JdbcTemplate jdbcTemplate;
 
@@ -66,7 +68,7 @@ public class AliasJdbcTemplateRepository implements AliasRepository{
         // don't allow agency_id updates for now
         final String sql = "update alias set "
                 + "name = ?, "
-                + "persona = ?, "
+                + "persona = ? "
                 + "where alias_id = ?;";
 
         return jdbcTemplate.update(sql,
