@@ -5,6 +5,8 @@ import learn.field_agent.models.Alias;
 import learn.field_agent.models.SecurityClearance;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AliasService {
     private final AliasRepository repository;
@@ -70,15 +72,27 @@ public class AliasService {
 
         for (Alias a : repository.findAll()) {
             if (a.getName().matches(alias.getName())) {
+
                 if (Validations.isNullOrBlank(alias.getPersona())) {
                     result.addMessage("Persona is required for duplicate name", ResultType.INVALID);
+                    return result;
                 }
+
+                if (a.getPersona() == null) {
+                    return result;
+                }
+
                 if (a.getPersona().matches(alias.getPersona())) {
                     result.addMessage("Different persona is required for duplicate name", ResultType.INVALID);
                 }
+
             }
         }
 
         return result;
+    }
+
+    public List<Alias> findAll() {
+       return repository.findAll();
     }
 }

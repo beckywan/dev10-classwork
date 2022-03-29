@@ -1,10 +1,7 @@
 package learn.field_agent.domain;
 
-import learn.field_agent.data.AgencyAgentJdbcTemplateRepository;
-import learn.field_agent.data.AgencyAgentRepository;
 import learn.field_agent.data.SecurityClearanceRepository;
 import learn.field_agent.models.SecurityClearance;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +10,15 @@ import java.util.List;
 @Service
 public class SecurityClearanceService {
 
+
     private final SecurityClearanceRepository repository;
 
-    public SecurityClearanceService(SecurityClearanceRepository repository) {
+    private final JdbcTemplate jdbcTemplate;
+
+
+    public SecurityClearanceService(SecurityClearanceRepository repository, JdbcTemplate jdbcTemplate) {
         this.repository = repository;
+        this.jdbcTemplate = jdbcTemplate;
     }
     
     public SecurityClearance findById(int securityClearanceId) {
@@ -63,10 +65,10 @@ public class SecurityClearanceService {
     }
 
 
-    private JdbcTemplate jdbcTemplate;
 
     public Result<SecurityClearance> deleteById(int securityClearanceId) {
         Result<SecurityClearance> result = new Result<>();
+
 
         int count = jdbcTemplate.queryForObject(
                 "select count(*) from agency_agent where security_clearance_id = ?;", Integer.class, securityClearanceId);
@@ -75,6 +77,9 @@ public class SecurityClearanceService {
             return result;
         }
 
+        if (!repository.deleteById(securityClearanceId)) {
+            result.addMessage("Security Clearance Id is not found", ResultType.NOT_FOUND);
+        }
         return result;
     }
 
