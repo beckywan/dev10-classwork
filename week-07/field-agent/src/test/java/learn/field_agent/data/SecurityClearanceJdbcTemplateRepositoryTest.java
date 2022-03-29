@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,8 +42,8 @@ class SecurityClearanceJdbcTemplateRepositoryTest {
         actual = repository.findById(2);
         assertEquals(topSecret, actual);
 
-        //should not find missing
-        actual = repository.findById(3);
+        //should not find non-existent object
+        actual = repository.findById(99);
         assertEquals(null, actual);
     }
 

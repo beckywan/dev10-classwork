@@ -4,6 +4,7 @@ import learn.field_agent.data.LocationRepository;
 import learn.field_agent.data.SecurityClearanceRepository;
 import learn.field_agent.models.Location;
 import learn.field_agent.models.SecurityClearance;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -82,9 +83,35 @@ public class SecurityClearanceServiceTest {
             assertEquals(ResultType.SUCCESS, actual.getType());
         }
 
+    @Test
+    void shouldNotDeleteInvalid() {
+        when(repository.deleteById(99)).thenReturn(false);
+
+        Result<SecurityClearance> actual = service.deleteById(99);
+        assertEquals(ResultType.NOT_FOUND, actual.getType());
+
+
+        when(repository.deleteById(1)).thenReturn(false);
+
+        actual = service.deleteById(1);
+        assertEquals(ResultType.INVALID, actual.getType());
+
+    }
+
+        @Test
+        void shouldDelete() {
+            when(repository.deleteById(2)).thenReturn(true);
+
+            Result<SecurityClearance> actual = service.deleteById(2);
+            assertEquals(ResultType.SUCCESS, actual.getType());
+        }
+
+
+
         SecurityClearance makeSecurityClearance() {
             SecurityClearance securityClearance = new SecurityClearance();
             securityClearance.setName("Test");
             return securityClearance;
         }
+
 }

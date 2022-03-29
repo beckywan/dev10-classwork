@@ -78,7 +78,7 @@ public class AliasService {
                     return result;
                 }
 
-                if (a.getPersona() == null) {
+                if (Validations.isNullOrBlank(a.getPersona())) {
                     return result;
                 }
 
