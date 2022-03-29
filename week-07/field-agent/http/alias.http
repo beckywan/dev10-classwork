@@ -26,7 +26,7 @@ Content-Type: application/json
   "name": ""
 }
 
-### [ ] For POST return a 400 if the alias fails one of the domain rules
+### [ ]09 For POST return a 400 if the alias fails one of the domain rules
 ### [ ] Persona is not required unless a name is duplicated. The persona differentiates between duplicate names.
 
 POST {{url}} HTTP/1.1
