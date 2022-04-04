@@ -2,12 +2,13 @@ package learn.field_agent.domain;
 
 import learn.field_agent.data.AliasRepository;
 import learn.field_agent.models.Alias;
+import learn.field_agent.models.SecurityClearance;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -81,6 +82,11 @@ public class AliasServiceTest {
             Result<Alias> actual = service.update(alias);
             assertEquals(ResultType.SUCCESS, actual.getType());
         }
+
+    @Test
+    void shouldNotDeleteInvalid() {
+        assertFalse(service.deleteById(999));
+    }
 
         Alias makeAlias() {
             Alias alias = new Alias();
