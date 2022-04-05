@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 export const EditAgent = (props) => {
-  const initialFormState = {
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    dob: "",
-    heightInInches: 0,
-  }
-
+   
+    const initialFormState = {
+      firstName: props.firstName,
+      middleName: props.middleName,
+      lastName: props.lastName,
+      dob: props.dob,
+      heightInInches: props.heightInInches,
+    }
   const [agent, setAgent] = useState(initialFormState);
 
   const handleInputChange = (event) => {
@@ -21,12 +21,11 @@ export const EditAgent = (props) => {
       setAgent(newAgent);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     props.handleUpdateSubmit(agent);
 
-  }
-  
+  };
   return (
     <form onSubmit={handleSubmit} className="form-inline mx-2 my-4">
         <input
@@ -64,13 +63,13 @@ export const EditAgent = (props) => {
         className="form-control col-6"
         id="dob"
         name="dob"
-        placeholder="Please enter the date of birth:"
+        placeholder="Please enter the date of birth (yyyy-mm-dd):"
         value={agent.dob}
         onChange={handleInputChange}
       />
 
  <input
-        type="text"
+        type="number"
         className="form-control col-6"
         id="heightInInches"
         name="heightInInches"

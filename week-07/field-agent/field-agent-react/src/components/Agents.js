@@ -5,6 +5,7 @@ import { TableFormat } from "./TableFormat";
 import { Errors } from "./Errors";
 
 function Agents() {
+  
   const [agents, setAgents] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,26 +27,24 @@ function Agents() {
       }
     };
     getData();
-  });
+  }, []);
 
-  const handleAddSubmit = async (newAgent) => {
+  const handleAddSubmit = async (agent) => {
+    
 
-    const body = JSON.stringify(newAgent);
+    const body = JSON.stringify(agent);
 
-    console.log(body);
 
     try {
       const response = await fetch("http://localhost:8080/api/agent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Access-Control-Allow-Origin" : "*",
+          // "Accept": "application/json",
+          // "Access-Control-Allow-Origin" : "*",
         },
         body,
       });
-
-      console.log(response);
 
       if (response.status === 201 || response.status === 400) {
         const data = await response.json();
@@ -83,17 +82,19 @@ function Agents() {
     setEditAgentId(agentToEdit.agentId);
   };
 
-  const handleUpdateSubmit = async (firstName, lastName, middleName, dob, heightInInches) => {
+  const handleUpdateSubmit = async (agent) => {
+
     const updatedAgent = {
       agentId: editAgentId,
-      firstName, 
-      lastName, 
-      middleName, 
-      dob, 
+      firstName,
+      middleName,
+      lastName,
+      dob,
       heightInInches,
     };
 
     const body = JSON.stringify(updatedAgent);
+
 
     try {
       const response = await fetch(
@@ -144,13 +145,14 @@ function Agents() {
 
 
   
+
   const handleDelete = 
 
-  // // if (window.confirm("Want to delete?")) {
-
-  // }
-
   async (agentId) => {
+
+    var deleteConfirm = window.confirm("Want to delete?");
+
+  if (deleteConfirm) {
 
     try {
       const response = await fetch(
@@ -169,7 +171,8 @@ function Agents() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+};
 
 
   const handleUpdateCancel = () => {
@@ -195,11 +198,6 @@ function Agents() {
       ) : (
         <EditAgent
           handleUpdateSubmit={handleUpdateSubmit}
-          firstName={firstName}
-          middleName={middleName}
-          lastName={lastName}
-          dob={dob}
-          heightInInches={heightInInches}
           handleUpdateCancel={handleUpdateCancel}
         />
       )}

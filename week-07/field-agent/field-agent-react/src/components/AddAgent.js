@@ -64,7 +64,7 @@ export const AddAgent = (props) => {
         className="form-control col-6"
         id="dob"
         name="dob"
-        placeholder="Please enter the date of birth:"
+        placeholder="Please enter the date of birth (yyyy-mm-dd):"
         value={agent.dob}
         onChange={handleInputChange}
       />
