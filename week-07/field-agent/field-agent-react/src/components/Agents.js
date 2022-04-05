@@ -84,16 +84,9 @@ function Agents() {
 
   const handleUpdateSubmit = async (agent) => {
 
-    const updatedAgent = {
-      agentId: editAgentId,
-      firstName,
-      middleName,
-      lastName,
-      dob,
-      heightInInches,
-    };
+    agent.agentId = editAgentId;
 
-    const body = JSON.stringify(updatedAgent);
+    const body = JSON.stringify(agent);
 
 
     try {

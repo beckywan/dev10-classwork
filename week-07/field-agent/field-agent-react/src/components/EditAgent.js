@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export const EditAgent = (props) => {
    
     const initialFormState = {
-      firstName: props.firstName,
+      firstName: useState(props.firstName),
       middleName: props.middleName,
       lastName: props.lastName,
       dob: props.dob,
