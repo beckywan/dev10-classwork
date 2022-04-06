@@ -1,31 +1,62 @@
 import React, { useState } from "react";
 
 export const EditAgent = (props) => {
-   
+  // const [firstName, setFirstName] = useState(props.firstName);
+  // const [middleName, setMiddleName] = useState(props.middleName);
+  // const [lastName, setLastName] = useState(props.lastName);
+  // const [dob, setDob] = useState(props.dob);
+  // const [heightInInches, setHeightInInches] = useState(props.heightInInches);
+
+  // const handleInputChange = event => {
+  //   if (event.target.type === "number") {
+  //           event.target.value = parseInt(event.target.value);
+  //         }
+    
+  //   setFirstName(event.target.value);
+  //   setMiddleName(event.target.value);
+  //   setLastName(event.target.value);
+  //   setDob(event.target.value);
+  //   setHeightInInches(event.target.value);
+  // }
+
+  // const handleSubmit = event => {
+  //     event.preventDefault();
+  //     props.handleUpdateSubmit(firstName);
+  //     props.handleUpdateSubmit(middleName);
+  //     props.handleUpdateSubmit(lastName);
+  //     props.handleUpdateSubmit(dob);
+  //     props.handleUpdateSubmit(heightInInches);
+  // }
+
+
+
+
     const initialFormState = {
       firstName: useState(props.firstName),
-      middleName: props.middleName,
-      lastName: props.lastName,
-      dob: props.dob,
-      heightInInches: props.heightInInches,
+      middleName: useState(props.middleName),
+      lastName: useState(props.lastName),
+      dob: useState(props.dob),
+      heightInInches: useState(props.heightInInches),
     }
-  const [agent, setAgent] = useState(initialFormState);
 
-  const handleInputChange = (event) => {
-      const newAgent = {...agent};
-      let value = event.target.value;
-      if (event.target.type === "number") {
-        value = parseInt(value);
-      }
-      newAgent[event.target.name] = value;
-      setAgent(newAgent);
-  };
+    const [agent, setAgent] = useState(initialFormState);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    props.handleUpdateSubmit(agent);
+    const handleInputChange = (event) => {
+        const newAgent = {...agent};
+        let value = event.target.value;
+        if (event.target.type === "number") {
+          value = parseInt(value);
+        }
+        newAgent[event.target.name] = value;
+        setAgent(newAgent);
+    };
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      props.handleUpdateSubmit(agent);
+  
+    };
 
-  };
   return (
     <form onSubmit={handleSubmit} className="form-inline mx-2 my-4">
         <input

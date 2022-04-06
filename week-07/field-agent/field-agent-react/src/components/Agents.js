@@ -15,7 +15,6 @@ function Agents() {
   const [editAgentId, setEditAgentId] = useState(0);
   const [errors, setErrors] = useState([]);
 
-
   useEffect(() => {
     const getData = async () => {
       try {
@@ -84,7 +83,16 @@ function Agents() {
 
   const handleUpdateSubmit = async (agent) => {
 
+    // const updatedAgent = {
+    //   agentId: editAgentId,
+    //   firstName, 
+    //   middleName, 
+    //   lastName, 
+    //   dob, 
+    //   heightInInches
+    // };
     agent.agentId = editAgentId;
+    
 
     const body = JSON.stringify(agent);
 
