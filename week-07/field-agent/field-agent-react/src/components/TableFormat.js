@@ -19,7 +19,7 @@ export const TableFormat = (props) => (
               <div>
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => props.handleEdit(agent.agentId)}
+                  onClick={() => props.handleEdit(agent)}
                 >
                   Edit
                 </button>

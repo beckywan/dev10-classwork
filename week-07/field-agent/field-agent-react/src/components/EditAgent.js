@@ -31,15 +31,18 @@ export const EditAgent = (props) => {
 
 
 
-    const initialFormState = {
-      firstName: useState(props.firstName),
-      middleName: useState(props.middleName),
-      lastName: useState(props.lastName),
-      dob: useState(props.dob),
-      heightInInches: useState(props.heightInInches),
-    }
+    // const initialFormState = {
+    //   firstName: useState(props.firstName),
+    //   middleName: useState(props.middleName),
+    //   lastName: useState(props.lastName),
+    //   dob: useState(props.dob),
+    //   heightInInches: useState(props.heightInInches),
+    // }
 
-    const [agent, setAgent] = useState(initialFormState);
+
+
+
+    const [agent, setAgent] = useState(props.currentAgent);
 
     const handleInputChange = (event) => {
         const newAgent = {...agent};
@@ -115,7 +118,7 @@ export const EditAgent = (props) => {
         Update Agent
       </button>
       
-      <button className="btn btn-warning ml-2" onClick={props.handleUpdateCancel}>
+      <button className="btn btn-warning ml-2" onClick={()=> props.setEditing(false)}>
         Cancel
       </button>
     </form>

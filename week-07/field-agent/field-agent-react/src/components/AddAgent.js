@@ -24,7 +24,7 @@ export const AddAgent = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     props.handleAddSubmit(agent);
-
+    setAgent(initialFormState);
   };
 
   return (
@@ -85,15 +85,15 @@ export const AddAgent = (props) => {
         Add Agent
       </button>
 
-      {agent.firstName || agent.lastName || agent.heightInInches || props.errors.length > 0 ? (
+      
         <button
           className="btn btn-warning ml-2"
           type="button"
-          onClick={props.handleUpdateCancel}
+          onClick={()=> setAgent(initialFormState)}
         >
           Cancel
         </button>
-      ) : null}
+      
     </form>
   );
 };
