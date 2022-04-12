@@ -1,21 +1,18 @@
-import React from 'react'
-
-export const Errors = ({errors}) => {
-
-
-    if (errors.length === 0) {
-        return null;
+function Errors({ errors }) {
+    if (errors?.length === 0) {
+      return null;
     }
-
-    console.log(errors);
-  return (
-    <div className='alert alert-danger'>
+  
+    return (
+      <div className="alert alert-danger">
         The following errors were found:
         <ul>
-            {errors.map(error => (
-                <li key={error}>{error}</li>
-            ))}
+          {errors?.map(error => (
+            <li key={error}>{error}</li>
+          ))}
         </ul>
-    </div>
-  )
-}
+      </div>
+    );
+  }
+  
+  export default Errors;

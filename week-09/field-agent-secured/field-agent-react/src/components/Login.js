@@ -1,78 +1,95 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import Error from "./Error";
-import jwtDecode from "jwt-decode";
-import AuthContext from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import Errors from "./Errors";
+import AuthContext from "../AuthContext";
 
-export default function Login({ userStatus }) {
-const [username, setUsername] = useState("");
-const [password, setPassword] = useState("");
-const [errors, setErrors] = useState([]);
+const Login = () => {
+  const initUser = {
+    username: "",
+    password: "",
+  };
 
-const [_, setUserStatus] = useContext(AuthContext);
-const history = useHistory();
+  const [user, setUser] = useState(initUser);
+  const [errors, setErrors] = useState([]);
 
+  const auth = useContext(AuthContext);
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
+  const history = useHistory();
 
-  const response = await fetch("http://localhost:8080/authenticate", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username,
-      password,
-    }),
-  });
+  const handleInputChange = (event) => {
+    setUser({ ...user, [event.target.name]: event.target.value });
+  };
 
-  // This code executes if the request is successful
-  if (response.status === 200) {
-    const { jwt_token } = await response.json();
-    console.log(jwtDecode(jwt_token));
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    console.log(jwt_token);
-    setUserStatus({ user: jwtDecode(jwt_token) });
-    history.push("/");
-  } else if (response.status === 400) {
-    const errors = await response.json();
-    setErrors(errors);
-  } else if (response.status === 403) {
-    setErrors(["Login failed."]);
-  } else {
-    setErrors(["Unknown error."]);
-  }
+    const init = {
+      method: "POST", // GET by default
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    };
 
+    fetch('http://localhost:8080/api/authenticate', init)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else if (response.status === 403) {
+        return null;
+      }
+      return Promise.reject('Something unexpected went wrong.');
+    })
+    .then(data => {
+      if (data) {
+        auth.login(data.jwt_token);
+        history.push("/");
+      } else {
+        setErrors(['Login failure']);
+      }
+    })
+    .catch(error => console.log(error));
+  };
+
+  return (
+    <>
+      <h2 className="my-4">Login</h2>
+      <Errors errors={errors} />
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input
+            className="form-control"
+            type="text"
+            id="username"
+            name="username"
+            value={user.username}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            className="form-control"
+            type="password"
+            id="password"
+            name="password"
+            value={user.password}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="mt-5">
+          <button className="btn btn-success" type="submit">
+            <i className="bi bi-plus-circle-fill"></i> Login
+          </button>
+          <Link to="/" className="btn btn-warning ml-2">
+            <i className="bi bi-x"></i> Cancel
+          </Link>
+        </div>
+      </form>
+    </>
+  );
 };
 
-return (
-  <div>
-    <h2>Login</h2>
-
-    {errors.map((error, i) => (
-      <Error key={i} msg={error} />
-    ))}
-
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-    </form>
-  </div>
-);
-    }
+export default Login;

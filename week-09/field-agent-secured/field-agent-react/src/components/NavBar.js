@@ -1,54 +1,37 @@
 import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext } from 'react';
+import AuthContext from "../AuthContext";
+const NavBar = () => {
 
-
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    setUserStatus({ user: jwtDecode(token) });
-  }
-}, [setUserStatus]);
-
-
-function NavBar() {
-  const [userStatus, setUserStatus] = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/add">Add</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-          <Link to="/login">
-            {localStorage.getItem("token") ? "Logout" : "Login"}
-          </Link>
-        </li>
-        {userStatus?.user && (
-          <li>
-            <Link to="/add">Add</Link>
-          </li>
-        )}
-        {userStatus?.user ? (
-          <li>
-            <button
-              onClick={() => {
-                setUserStatus(null);
-                localStorage.removeItem("token");
-              }}
-            >
-              {/* `sub` is the property from the decoded token */}
-              Logout {userStatus.user.sub}
-            </button>
-          </li>
-        ) : (
+      <>
+    <ul>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/agent">Agents</Link>
+      </li>
+      {!auth.user && (
+        <>
           <li>
             <Link to="/login">Login</Link>
           </li>
-        )}
-      </ul>
-    </nav>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+        </>
+      )}
+    </ul>
+    {auth.user && (
+        <div>
+        <p>Hello {auth.user.username}!</p>
+        <button onClick={() => auth.logout()} className="btn btn-primary">Logout</button>
+        </div>
+    )}
+    </>
   );
-}
+};
+
 export default NavBar;
