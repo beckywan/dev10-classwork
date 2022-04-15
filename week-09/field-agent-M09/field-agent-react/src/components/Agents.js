@@ -39,7 +39,7 @@ function Agents() {
 
     setEditing(false);
 
-    var deleteConfirm = window.confirm("Want to delete?");
+    var deleteConfirm = window.confirm("Confirm deletion of this agent?");
 
     if (deleteConfirm) {
 

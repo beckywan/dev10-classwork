@@ -80,9 +80,11 @@ function App() {
           {/* <Route path="/register">
             <Register />
           </Route> */}
+
           <Route path="*">
             <NotFound />
           </Route>
+          
         </Switch>
       </Router>
     </AuthContext.Provider>
